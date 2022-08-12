@@ -321,13 +321,12 @@ def writeDataFile(var):
         datafile.write("}\n\n")
 
 def analysisMain(VARS):
-    for var in VARS:
-        writeDataFile(var)
+    try:
+        for var in VARS:
+            writeDataFile(var)
+        return True
+    except:
+        print("数据读取失败，程序中断")
+        return False
 
-# analysisMain()
-
-# SH_analysis("lu2209")
-# INE_analysis("sc2209")
-# DL_analysis("eg2209")
-# ZZ_analysis("MA209")
 

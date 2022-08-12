@@ -57,30 +57,26 @@ def get_res(url, name, var=""):
         print(var+"爬取失败")
 
 def crawlerMain(date, DL_list):
-    start_time = perf_counter()
+    try:
+        start_time = perf_counter()
 
-    #郑商所
-    get_res(ZZ_URL_HOLD_Daily(date, "MA"), "ZZ_MA_Hold.txt", "MA")
-    get_res(ZZ_URL_HOLD_Daily(date, "PF"), "ZZ_PF_Hold.txt", "PF")
-    get_res(ZZ_URL_HOLD_Daily(date, "TA"), "ZZ_TA_Hold.txt", "TA")
+        #郑商所
+        get_res(ZZ_URL_HOLD_Daily(date, "MA"), "ZZ_MA_Hold.txt", "MA")
+        get_res(ZZ_URL_HOLD_Daily(date, "PF"), "ZZ_PF_Hold.txt", "PF")
+        get_res(ZZ_URL_HOLD_Daily(date, "TA"), "ZZ_TA_Hold.txt", "TA")
 
-    #大商所
-    for var in DL_list:
-        get_res(DL_URL_HOLD_Daily(date, var), "DL_"+var+"_Hold.txt", var)
+        #大商所
+        for var in DL_list:
+            get_res(DL_URL_HOLD_Daily(date, var), "DL_"+var+"_Hold.txt", var)
 
-    #上期所
-    get_res(SH_URL_HOLD_Daily(date), "SH_Hold.dat", "SH")
+        #上期所
+        get_res(SH_URL_HOLD_Daily(date), "SH_Hold.dat", "SH")
 
-    #上能所
-    get_res(SH_URL_HOLD_Daily(date), "INE_Hold.dat", "INE")
-    end_time = perf_counter()
-    print("爬取共用时:", end_time-start_time, "s")
-
-# crawlerMain(date="20220801", DL_list = ['eb2209', 'eg2209', 'pg2209', 'pp2209', 'l2209', 'v2209'])
-
-
-#主流化工品种主力合约：
-# 1、郑商所：甲醇是MA2209合约、PTA是TA2209合约、短纤是PF2210。
-# 2、大商所：苯乙烯是EB2209、乙二醇是EG2209、液化石油气是PG2209、聚丙烯是PP2209、聚乙烯是L2209、PVC是V2209。
-# 3、上期所：沥青是BU2209、高硫燃料油或者直接叫燃料油是FU2301。
-# 4、上能所：原油是SC2209、低硫燃料油是LU2209
+        #上能所
+        get_res(SH_URL_HOLD_Daily(date), "INE_Hold.dat", "INE")
+        end_time = perf_counter()
+        print("爬取共用时:", end_time-start_time, "s")
+        return True
+    except:
+        print("爬虫失败，程序中断")
+        return False
