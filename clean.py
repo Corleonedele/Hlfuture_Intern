@@ -1,5 +1,6 @@
 import os
 
+# 清理暂存文件
 def clean():
     try:
         for file in os.listdir():

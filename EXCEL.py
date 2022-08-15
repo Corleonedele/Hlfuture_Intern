@@ -1,4 +1,4 @@
-
+#此文件可忽略
 import openpyxl
 from os import remove
 from openpyxl.styles import Alignment, PatternFill
@@ -20,10 +20,14 @@ def writeToExcel_eb2209(book_name, date, var):
     try:
         total_long = eb2209_long.get("&nbsp;")
         total_short =  eb2209_short.get("&nbsp;")
+        total_long_change = eb2209_long_change.get("&nbsp;")
+        total_short_change = eb2209_short_change.get("&nbsp;")
         if total_long == None:raise TypeError
     except:
         total_long = eb2209_long.get("")
         total_short =  eb2209_short.get("")
+        total_long_change = eb2209_long_change.get("")
+        total_short_change = eb2209_short_change.get("")
     COL = 4
     ROW = 3
     sheet.cell(ROW, COL-1).value=var 
@@ -113,24 +117,40 @@ def writeToExcel_eb2209(book_name, date, var):
     sheet.cell(ROW, COL).value = "前20仓位总量"
     sheet.cell(ROW, COL+1).value = total_long
     sheet.cell(ROW, COL+2).value = total_short
-    sheet.cell(ROW+1, COL).value = "前5仓位集中度"
-    sheet.cell(ROW+2, COL).value = "前5仓位多空倾向"
+    sheet.cell(ROW+1, COL).value = "前20仓位总变量"
+    sheet.cell(ROW+1, COL+1).value = total_long_change
+    sheet.cell(ROW+1, COL+2).value = total_short_change
+    sheet.cell(ROW+2, COL).value = "前20仓位多空倾向"
+    if total_long_change >= total_short_change:sheet.cell(ROW+2, COL+1).value="做多 轧差量为"+str(total_long-total_short)
+    else:sheet.cell(ROW+2, COL+1).value="做空 轧差量为"+str(total_short-total_long)
     long_5 = 0
+    long_5_change = 0
     short_5 = 0
+    short_5_change = 0
     tem_count = 0
     for key in eb2209_long:
         if tem_count == 5:break
         else:tem_count+=1
         long_5 += eb2209_long[key]
+        long_5_change = eb2209_long_change[key]
     tem_count = 0
     for key in eb2209_short:
         if tem_count == 5:break
         else:tem_count+=1
         short_5 += eb2209_short[key]
-    sheet.cell(ROW+1, COL+1).value = str(round(long_5/total_long, 3) * 100)+"%"
-    sheet.cell(ROW+1, COL+2).value = str(round(short_5/total_short, 3) * 100)+"%"
-    if (long_5/total_long) >= (short_5/total_short):sheet.cell(ROW+2, COL+2).value = "做多 轧差量为"+str(long_5-short_5)
-    else:sheet.cell(ROW+2, COL+1).value = "做空 轧差量为"+str(short_5-long_5)
+        short_5_change = eb2209_short_change[key]
+    sheet.cell(ROW+3, COL).value = "前5仓位总量"
+    sheet.cell(ROW+3, COL+1).value = long_5
+    sheet.cell(ROW+3, COL+2).value = short_5
+    sheet.cell(ROW+4, COL).value = "前5仓位总变量"
+    sheet.cell(ROW+4, COL+1).value = long_5_change
+    sheet.cell(ROW+4, COL+2).value = short_5_change 
+    sheet.cell(ROW+5, COL).value = "前5仓位集中度"
+    sheet.cell(ROW+6, COL).value = "前5仓位多空倾向"
+    sheet.cell(ROW+5, COL+1).value = str(round(long_5/total_long, 3) * 100)+"%"
+    sheet.cell(ROW+5, COL+2).value = str(round(short_5/total_short, 3) * 100)+"%"
+    if (long_5/total_long) >= (short_5/total_short):sheet.cell(ROW+6, COL+1).value = "做多 轧差量为"+str(long_5-short_5)
+    else:sheet.cell(ROW+6, COL+1).value = "做空 轧差量为"+str(short_5-long_5)
     COL = 10
     ROW = 60
     sheet.cell(ROW-1, COL).value = "异常值"
@@ -185,10 +205,14 @@ def writeToExcel_eg2209(book_name, date, var):
     try:
         total_long = eg2209_long.get("&nbsp;")
         total_short =  eg2209_short.get("&nbsp;")
+        total_long_change = eg2209_long_change.get("&nbsp;")
+        total_short_change = eg2209_short_change.get("&nbsp;")
         if total_long == None:raise TypeError
     except:
         total_long = eg2209_long.get("")
         total_short =  eg2209_short.get("")
+        total_long_change = eg2209_long_change.get("")
+        total_short_change = eg2209_short_change.get("")
     COL = 4
     ROW = 3
     sheet.cell(ROW, COL-1).value=var 
@@ -278,24 +302,40 @@ def writeToExcel_eg2209(book_name, date, var):
     sheet.cell(ROW, COL).value = "前20仓位总量"
     sheet.cell(ROW, COL+1).value = total_long
     sheet.cell(ROW, COL+2).value = total_short
-    sheet.cell(ROW+1, COL).value = "前5仓位集中度"
-    sheet.cell(ROW+2, COL).value = "前5仓位多空倾向"
+    sheet.cell(ROW+1, COL).value = "前20仓位总变量"
+    sheet.cell(ROW+1, COL+1).value = total_long_change
+    sheet.cell(ROW+1, COL+2).value = total_short_change
+    sheet.cell(ROW+2, COL).value = "前20仓位多空倾向"
+    if total_long_change >= total_short_change:sheet.cell(ROW+2, COL+1).value="做多 轧差量为"+str(total_long-total_short)
+    else:sheet.cell(ROW+2, COL+1).value="做空 轧差量为"+str(total_short-total_long)
     long_5 = 0
+    long_5_change = 0
     short_5 = 0
+    short_5_change = 0
     tem_count = 0
     for key in eg2209_long:
         if tem_count == 5:break
         else:tem_count+=1
         long_5 += eg2209_long[key]
+        long_5_change = eg2209_long_change[key]
     tem_count = 0
     for key in eg2209_short:
         if tem_count == 5:break
         else:tem_count+=1
         short_5 += eg2209_short[key]
-    sheet.cell(ROW+1, COL+1).value = str(round(long_5/total_long, 3) * 100)+"%"
-    sheet.cell(ROW+1, COL+2).value = str(round(short_5/total_short, 3) * 100)+"%"
-    if (long_5/total_long) >= (short_5/total_short):sheet.cell(ROW+2, COL+2).value = "做多 轧差量为"+str(long_5-short_5)
-    else:sheet.cell(ROW+2, COL+1).value = "做空 轧差量为"+str(short_5-long_5)
+        short_5_change = eg2209_short_change[key]
+    sheet.cell(ROW+3, COL).value = "前5仓位总量"
+    sheet.cell(ROW+3, COL+1).value = long_5
+    sheet.cell(ROW+3, COL+2).value = short_5
+    sheet.cell(ROW+4, COL).value = "前5仓位总变量"
+    sheet.cell(ROW+4, COL+1).value = long_5_change
+    sheet.cell(ROW+4, COL+2).value = short_5_change 
+    sheet.cell(ROW+5, COL).value = "前5仓位集中度"
+    sheet.cell(ROW+6, COL).value = "前5仓位多空倾向"
+    sheet.cell(ROW+5, COL+1).value = str(round(long_5/total_long, 3) * 100)+"%"
+    sheet.cell(ROW+5, COL+2).value = str(round(short_5/total_short, 3) * 100)+"%"
+    if (long_5/total_long) >= (short_5/total_short):sheet.cell(ROW+6, COL+1).value = "做多 轧差量为"+str(long_5-short_5)
+    else:sheet.cell(ROW+6, COL+1).value = "做空 轧差量为"+str(short_5-long_5)
     COL = 10
     ROW = 60
     sheet.cell(ROW-1, COL).value = "异常值"
@@ -350,10 +390,14 @@ def writeToExcel_pg2209(book_name, date, var):
     try:
         total_long = pg2209_long.get("&nbsp;")
         total_short =  pg2209_short.get("&nbsp;")
+        total_long_change = pg2209_long_change.get("&nbsp;")
+        total_short_change = pg2209_short_change.get("&nbsp;")
         if total_long == None:raise TypeError
     except:
         total_long = pg2209_long.get("")
         total_short =  pg2209_short.get("")
+        total_long_change = pg2209_long_change.get("")
+        total_short_change = pg2209_short_change.get("")
     COL = 4
     ROW = 3
     sheet.cell(ROW, COL-1).value=var 
@@ -443,24 +487,40 @@ def writeToExcel_pg2209(book_name, date, var):
     sheet.cell(ROW, COL).value = "前20仓位总量"
     sheet.cell(ROW, COL+1).value = total_long
     sheet.cell(ROW, COL+2).value = total_short
-    sheet.cell(ROW+1, COL).value = "前5仓位集中度"
-    sheet.cell(ROW+2, COL).value = "前5仓位多空倾向"
+    sheet.cell(ROW+1, COL).value = "前20仓位总变量"
+    sheet.cell(ROW+1, COL+1).value = total_long_change
+    sheet.cell(ROW+1, COL+2).value = total_short_change
+    sheet.cell(ROW+2, COL).value = "前20仓位多空倾向"
+    if total_long_change >= total_short_change:sheet.cell(ROW+2, COL+1).value="做多 轧差量为"+str(total_long-total_short)
+    else:sheet.cell(ROW+2, COL+1).value="做空 轧差量为"+str(total_short-total_long)
     long_5 = 0
+    long_5_change = 0
     short_5 = 0
+    short_5_change = 0
     tem_count = 0
     for key in pg2209_long:
         if tem_count == 5:break
         else:tem_count+=1
         long_5 += pg2209_long[key]
+        long_5_change = pg2209_long_change[key]
     tem_count = 0
     for key in pg2209_short:
         if tem_count == 5:break
         else:tem_count+=1
         short_5 += pg2209_short[key]
-    sheet.cell(ROW+1, COL+1).value = str(round(long_5/total_long, 3) * 100)+"%"
-    sheet.cell(ROW+1, COL+2).value = str(round(short_5/total_short, 3) * 100)+"%"
-    if (long_5/total_long) >= (short_5/total_short):sheet.cell(ROW+2, COL+2).value = "做多 轧差量为"+str(long_5-short_5)
-    else:sheet.cell(ROW+2, COL+1).value = "做空 轧差量为"+str(short_5-long_5)
+        short_5_change = pg2209_short_change[key]
+    sheet.cell(ROW+3, COL).value = "前5仓位总量"
+    sheet.cell(ROW+3, COL+1).value = long_5
+    sheet.cell(ROW+3, COL+2).value = short_5
+    sheet.cell(ROW+4, COL).value = "前5仓位总变量"
+    sheet.cell(ROW+4, COL+1).value = long_5_change
+    sheet.cell(ROW+4, COL+2).value = short_5_change 
+    sheet.cell(ROW+5, COL).value = "前5仓位集中度"
+    sheet.cell(ROW+6, COL).value = "前5仓位多空倾向"
+    sheet.cell(ROW+5, COL+1).value = str(round(long_5/total_long, 3) * 100)+"%"
+    sheet.cell(ROW+5, COL+2).value = str(round(short_5/total_short, 3) * 100)+"%"
+    if (long_5/total_long) >= (short_5/total_short):sheet.cell(ROW+6, COL+1).value = "做多 轧差量为"+str(long_5-short_5)
+    else:sheet.cell(ROW+6, COL+1).value = "做空 轧差量为"+str(short_5-long_5)
     COL = 10
     ROW = 60
     sheet.cell(ROW-1, COL).value = "异常值"
@@ -515,10 +575,14 @@ def writeToExcel_pp2209(book_name, date, var):
     try:
         total_long = pp2209_long.get("&nbsp;")
         total_short =  pp2209_short.get("&nbsp;")
+        total_long_change = pp2209_long_change.get("&nbsp;")
+        total_short_change = pp2209_short_change.get("&nbsp;")
         if total_long == None:raise TypeError
     except:
         total_long = pp2209_long.get("")
         total_short =  pp2209_short.get("")
+        total_long_change = pp2209_long_change.get("")
+        total_short_change = pp2209_short_change.get("")
     COL = 4
     ROW = 3
     sheet.cell(ROW, COL-1).value=var 
@@ -608,24 +672,40 @@ def writeToExcel_pp2209(book_name, date, var):
     sheet.cell(ROW, COL).value = "前20仓位总量"
     sheet.cell(ROW, COL+1).value = total_long
     sheet.cell(ROW, COL+2).value = total_short
-    sheet.cell(ROW+1, COL).value = "前5仓位集中度"
-    sheet.cell(ROW+2, COL).value = "前5仓位多空倾向"
+    sheet.cell(ROW+1, COL).value = "前20仓位总变量"
+    sheet.cell(ROW+1, COL+1).value = total_long_change
+    sheet.cell(ROW+1, COL+2).value = total_short_change
+    sheet.cell(ROW+2, COL).value = "前20仓位多空倾向"
+    if total_long_change >= total_short_change:sheet.cell(ROW+2, COL+1).value="做多 轧差量为"+str(total_long-total_short)
+    else:sheet.cell(ROW+2, COL+1).value="做空 轧差量为"+str(total_short-total_long)
     long_5 = 0
+    long_5_change = 0
     short_5 = 0
+    short_5_change = 0
     tem_count = 0
     for key in pp2209_long:
         if tem_count == 5:break
         else:tem_count+=1
         long_5 += pp2209_long[key]
+        long_5_change = pp2209_long_change[key]
     tem_count = 0
     for key in pp2209_short:
         if tem_count == 5:break
         else:tem_count+=1
         short_5 += pp2209_short[key]
-    sheet.cell(ROW+1, COL+1).value = str(round(long_5/total_long, 3) * 100)+"%"
-    sheet.cell(ROW+1, COL+2).value = str(round(short_5/total_short, 3) * 100)+"%"
-    if (long_5/total_long) >= (short_5/total_short):sheet.cell(ROW+2, COL+2).value = "做多 轧差量为"+str(long_5-short_5)
-    else:sheet.cell(ROW+2, COL+1).value = "做空 轧差量为"+str(short_5-long_5)
+        short_5_change = pp2209_short_change[key]
+    sheet.cell(ROW+3, COL).value = "前5仓位总量"
+    sheet.cell(ROW+3, COL+1).value = long_5
+    sheet.cell(ROW+3, COL+2).value = short_5
+    sheet.cell(ROW+4, COL).value = "前5仓位总变量"
+    sheet.cell(ROW+4, COL+1).value = long_5_change
+    sheet.cell(ROW+4, COL+2).value = short_5_change 
+    sheet.cell(ROW+5, COL).value = "前5仓位集中度"
+    sheet.cell(ROW+6, COL).value = "前5仓位多空倾向"
+    sheet.cell(ROW+5, COL+1).value = str(round(long_5/total_long, 3) * 100)+"%"
+    sheet.cell(ROW+5, COL+2).value = str(round(short_5/total_short, 3) * 100)+"%"
+    if (long_5/total_long) >= (short_5/total_short):sheet.cell(ROW+6, COL+1).value = "做多 轧差量为"+str(long_5-short_5)
+    else:sheet.cell(ROW+6, COL+1).value = "做空 轧差量为"+str(short_5-long_5)
     COL = 10
     ROW = 60
     sheet.cell(ROW-1, COL).value = "异常值"
@@ -680,10 +760,14 @@ def writeToExcel_l2209(book_name, date, var):
     try:
         total_long = l2209_long.get("&nbsp;")
         total_short =  l2209_short.get("&nbsp;")
+        total_long_change = l2209_long_change.get("&nbsp;")
+        total_short_change = l2209_short_change.get("&nbsp;")
         if total_long == None:raise TypeError
     except:
         total_long = l2209_long.get("")
         total_short =  l2209_short.get("")
+        total_long_change = l2209_long_change.get("")
+        total_short_change = l2209_short_change.get("")
     COL = 4
     ROW = 3
     sheet.cell(ROW, COL-1).value=var 
@@ -773,24 +857,40 @@ def writeToExcel_l2209(book_name, date, var):
     sheet.cell(ROW, COL).value = "前20仓位总量"
     sheet.cell(ROW, COL+1).value = total_long
     sheet.cell(ROW, COL+2).value = total_short
-    sheet.cell(ROW+1, COL).value = "前5仓位集中度"
-    sheet.cell(ROW+2, COL).value = "前5仓位多空倾向"
+    sheet.cell(ROW+1, COL).value = "前20仓位总变量"
+    sheet.cell(ROW+1, COL+1).value = total_long_change
+    sheet.cell(ROW+1, COL+2).value = total_short_change
+    sheet.cell(ROW+2, COL).value = "前20仓位多空倾向"
+    if total_long_change >= total_short_change:sheet.cell(ROW+2, COL+1).value="做多 轧差量为"+str(total_long-total_short)
+    else:sheet.cell(ROW+2, COL+1).value="做空 轧差量为"+str(total_short-total_long)
     long_5 = 0
+    long_5_change = 0
     short_5 = 0
+    short_5_change = 0
     tem_count = 0
     for key in l2209_long:
         if tem_count == 5:break
         else:tem_count+=1
         long_5 += l2209_long[key]
+        long_5_change = l2209_long_change[key]
     tem_count = 0
     for key in l2209_short:
         if tem_count == 5:break
         else:tem_count+=1
         short_5 += l2209_short[key]
-    sheet.cell(ROW+1, COL+1).value = str(round(long_5/total_long, 3) * 100)+"%"
-    sheet.cell(ROW+1, COL+2).value = str(round(short_5/total_short, 3) * 100)+"%"
-    if (long_5/total_long) >= (short_5/total_short):sheet.cell(ROW+2, COL+2).value = "做多 轧差量为"+str(long_5-short_5)
-    else:sheet.cell(ROW+2, COL+1).value = "做空 轧差量为"+str(short_5-long_5)
+        short_5_change = l2209_short_change[key]
+    sheet.cell(ROW+3, COL).value = "前5仓位总量"
+    sheet.cell(ROW+3, COL+1).value = long_5
+    sheet.cell(ROW+3, COL+2).value = short_5
+    sheet.cell(ROW+4, COL).value = "前5仓位总变量"
+    sheet.cell(ROW+4, COL+1).value = long_5_change
+    sheet.cell(ROW+4, COL+2).value = short_5_change 
+    sheet.cell(ROW+5, COL).value = "前5仓位集中度"
+    sheet.cell(ROW+6, COL).value = "前5仓位多空倾向"
+    sheet.cell(ROW+5, COL+1).value = str(round(long_5/total_long, 3) * 100)+"%"
+    sheet.cell(ROW+5, COL+2).value = str(round(short_5/total_short, 3) * 100)+"%"
+    if (long_5/total_long) >= (short_5/total_short):sheet.cell(ROW+6, COL+1).value = "做多 轧差量为"+str(long_5-short_5)
+    else:sheet.cell(ROW+6, COL+1).value = "做空 轧差量为"+str(short_5-long_5)
     COL = 10
     ROW = 60
     sheet.cell(ROW-1, COL).value = "异常值"
@@ -845,10 +945,14 @@ def writeToExcel_v2209(book_name, date, var):
     try:
         total_long = v2209_long.get("&nbsp;")
         total_short =  v2209_short.get("&nbsp;")
+        total_long_change = v2209_long_change.get("&nbsp;")
+        total_short_change = v2209_short_change.get("&nbsp;")
         if total_long == None:raise TypeError
     except:
         total_long = v2209_long.get("")
         total_short =  v2209_short.get("")
+        total_long_change = v2209_long_change.get("")
+        total_short_change = v2209_short_change.get("")
     COL = 4
     ROW = 3
     sheet.cell(ROW, COL-1).value=var 
@@ -938,24 +1042,40 @@ def writeToExcel_v2209(book_name, date, var):
     sheet.cell(ROW, COL).value = "前20仓位总量"
     sheet.cell(ROW, COL+1).value = total_long
     sheet.cell(ROW, COL+2).value = total_short
-    sheet.cell(ROW+1, COL).value = "前5仓位集中度"
-    sheet.cell(ROW+2, COL).value = "前5仓位多空倾向"
+    sheet.cell(ROW+1, COL).value = "前20仓位总变量"
+    sheet.cell(ROW+1, COL+1).value = total_long_change
+    sheet.cell(ROW+1, COL+2).value = total_short_change
+    sheet.cell(ROW+2, COL).value = "前20仓位多空倾向"
+    if total_long_change >= total_short_change:sheet.cell(ROW+2, COL+1).value="做多 轧差量为"+str(total_long-total_short)
+    else:sheet.cell(ROW+2, COL+1).value="做空 轧差量为"+str(total_short-total_long)
     long_5 = 0
+    long_5_change = 0
     short_5 = 0
+    short_5_change = 0
     tem_count = 0
     for key in v2209_long:
         if tem_count == 5:break
         else:tem_count+=1
         long_5 += v2209_long[key]
+        long_5_change = v2209_long_change[key]
     tem_count = 0
     for key in v2209_short:
         if tem_count == 5:break
         else:tem_count+=1
         short_5 += v2209_short[key]
-    sheet.cell(ROW+1, COL+1).value = str(round(long_5/total_long, 3) * 100)+"%"
-    sheet.cell(ROW+1, COL+2).value = str(round(short_5/total_short, 3) * 100)+"%"
-    if (long_5/total_long) >= (short_5/total_short):sheet.cell(ROW+2, COL+2).value = "做多 轧差量为"+str(long_5-short_5)
-    else:sheet.cell(ROW+2, COL+1).value = "做空 轧差量为"+str(short_5-long_5)
+        short_5_change = v2209_short_change[key]
+    sheet.cell(ROW+3, COL).value = "前5仓位总量"
+    sheet.cell(ROW+3, COL+1).value = long_5
+    sheet.cell(ROW+3, COL+2).value = short_5
+    sheet.cell(ROW+4, COL).value = "前5仓位总变量"
+    sheet.cell(ROW+4, COL+1).value = long_5_change
+    sheet.cell(ROW+4, COL+2).value = short_5_change 
+    sheet.cell(ROW+5, COL).value = "前5仓位集中度"
+    sheet.cell(ROW+6, COL).value = "前5仓位多空倾向"
+    sheet.cell(ROW+5, COL+1).value = str(round(long_5/total_long, 3) * 100)+"%"
+    sheet.cell(ROW+5, COL+2).value = str(round(short_5/total_short, 3) * 100)+"%"
+    if (long_5/total_long) >= (short_5/total_short):sheet.cell(ROW+6, COL+1).value = "做多 轧差量为"+str(long_5-short_5)
+    else:sheet.cell(ROW+6, COL+1).value = "做空 轧差量为"+str(short_5-long_5)
     COL = 10
     ROW = 60
     sheet.cell(ROW-1, COL).value = "异常值"
@@ -1010,10 +1130,14 @@ def writeToExcel_MA209(book_name, date, var):
     try:
         total_long = MA209_long.get("&nbsp;")
         total_short =  MA209_short.get("&nbsp;")
+        total_long_change = MA209_long_change.get("&nbsp;")
+        total_short_change = MA209_short_change.get("&nbsp;")
         if total_long == None:raise TypeError
     except:
         total_long = MA209_long.get("")
         total_short =  MA209_short.get("")
+        total_long_change = MA209_long_change.get("")
+        total_short_change = MA209_short_change.get("")
     COL = 4
     ROW = 3
     sheet.cell(ROW, COL-1).value=var 
@@ -1103,24 +1227,40 @@ def writeToExcel_MA209(book_name, date, var):
     sheet.cell(ROW, COL).value = "前20仓位总量"
     sheet.cell(ROW, COL+1).value = total_long
     sheet.cell(ROW, COL+2).value = total_short
-    sheet.cell(ROW+1, COL).value = "前5仓位集中度"
-    sheet.cell(ROW+2, COL).value = "前5仓位多空倾向"
+    sheet.cell(ROW+1, COL).value = "前20仓位总变量"
+    sheet.cell(ROW+1, COL+1).value = total_long_change
+    sheet.cell(ROW+1, COL+2).value = total_short_change
+    sheet.cell(ROW+2, COL).value = "前20仓位多空倾向"
+    if total_long_change >= total_short_change:sheet.cell(ROW+2, COL+1).value="做多 轧差量为"+str(total_long-total_short)
+    else:sheet.cell(ROW+2, COL+1).value="做空 轧差量为"+str(total_short-total_long)
     long_5 = 0
+    long_5_change = 0
     short_5 = 0
+    short_5_change = 0
     tem_count = 0
     for key in MA209_long:
         if tem_count == 5:break
         else:tem_count+=1
         long_5 += MA209_long[key]
+        long_5_change = MA209_long_change[key]
     tem_count = 0
     for key in MA209_short:
         if tem_count == 5:break
         else:tem_count+=1
         short_5 += MA209_short[key]
-    sheet.cell(ROW+1, COL+1).value = str(round(long_5/total_long, 3) * 100)+"%"
-    sheet.cell(ROW+1, COL+2).value = str(round(short_5/total_short, 3) * 100)+"%"
-    if (long_5/total_long) >= (short_5/total_short):sheet.cell(ROW+2, COL+2).value = "做多 轧差量为"+str(long_5-short_5)
-    else:sheet.cell(ROW+2, COL+1).value = "做空 轧差量为"+str(short_5-long_5)
+        short_5_change = MA209_short_change[key]
+    sheet.cell(ROW+3, COL).value = "前5仓位总量"
+    sheet.cell(ROW+3, COL+1).value = long_5
+    sheet.cell(ROW+3, COL+2).value = short_5
+    sheet.cell(ROW+4, COL).value = "前5仓位总变量"
+    sheet.cell(ROW+4, COL+1).value = long_5_change
+    sheet.cell(ROW+4, COL+2).value = short_5_change 
+    sheet.cell(ROW+5, COL).value = "前5仓位集中度"
+    sheet.cell(ROW+6, COL).value = "前5仓位多空倾向"
+    sheet.cell(ROW+5, COL+1).value = str(round(long_5/total_long, 3) * 100)+"%"
+    sheet.cell(ROW+5, COL+2).value = str(round(short_5/total_short, 3) * 100)+"%"
+    if (long_5/total_long) >= (short_5/total_short):sheet.cell(ROW+6, COL+1).value = "做多 轧差量为"+str(long_5-short_5)
+    else:sheet.cell(ROW+6, COL+1).value = "做空 轧差量为"+str(short_5-long_5)
     COL = 10
     ROW = 60
     sheet.cell(ROW-1, COL).value = "异常值"
@@ -1175,10 +1315,14 @@ def writeToExcel_TA209(book_name, date, var):
     try:
         total_long = TA209_long.get("&nbsp;")
         total_short =  TA209_short.get("&nbsp;")
+        total_long_change = TA209_long_change.get("&nbsp;")
+        total_short_change = TA209_short_change.get("&nbsp;")
         if total_long == None:raise TypeError
     except:
         total_long = TA209_long.get("")
         total_short =  TA209_short.get("")
+        total_long_change = TA209_long_change.get("")
+        total_short_change = TA209_short_change.get("")
     COL = 4
     ROW = 3
     sheet.cell(ROW, COL-1).value=var 
@@ -1268,24 +1412,40 @@ def writeToExcel_TA209(book_name, date, var):
     sheet.cell(ROW, COL).value = "前20仓位总量"
     sheet.cell(ROW, COL+1).value = total_long
     sheet.cell(ROW, COL+2).value = total_short
-    sheet.cell(ROW+1, COL).value = "前5仓位集中度"
-    sheet.cell(ROW+2, COL).value = "前5仓位多空倾向"
+    sheet.cell(ROW+1, COL).value = "前20仓位总变量"
+    sheet.cell(ROW+1, COL+1).value = total_long_change
+    sheet.cell(ROW+1, COL+2).value = total_short_change
+    sheet.cell(ROW+2, COL).value = "前20仓位多空倾向"
+    if total_long_change >= total_short_change:sheet.cell(ROW+2, COL+1).value="做多 轧差量为"+str(total_long-total_short)
+    else:sheet.cell(ROW+2, COL+1).value="做空 轧差量为"+str(total_short-total_long)
     long_5 = 0
+    long_5_change = 0
     short_5 = 0
+    short_5_change = 0
     tem_count = 0
     for key in TA209_long:
         if tem_count == 5:break
         else:tem_count+=1
         long_5 += TA209_long[key]
+        long_5_change = TA209_long_change[key]
     tem_count = 0
     for key in TA209_short:
         if tem_count == 5:break
         else:tem_count+=1
         short_5 += TA209_short[key]
-    sheet.cell(ROW+1, COL+1).value = str(round(long_5/total_long, 3) * 100)+"%"
-    sheet.cell(ROW+1, COL+2).value = str(round(short_5/total_short, 3) * 100)+"%"
-    if (long_5/total_long) >= (short_5/total_short):sheet.cell(ROW+2, COL+2).value = "做多 轧差量为"+str(long_5-short_5)
-    else:sheet.cell(ROW+2, COL+1).value = "做空 轧差量为"+str(short_5-long_5)
+        short_5_change = TA209_short_change[key]
+    sheet.cell(ROW+3, COL).value = "前5仓位总量"
+    sheet.cell(ROW+3, COL+1).value = long_5
+    sheet.cell(ROW+3, COL+2).value = short_5
+    sheet.cell(ROW+4, COL).value = "前5仓位总变量"
+    sheet.cell(ROW+4, COL+1).value = long_5_change
+    sheet.cell(ROW+4, COL+2).value = short_5_change 
+    sheet.cell(ROW+5, COL).value = "前5仓位集中度"
+    sheet.cell(ROW+6, COL).value = "前5仓位多空倾向"
+    sheet.cell(ROW+5, COL+1).value = str(round(long_5/total_long, 3) * 100)+"%"
+    sheet.cell(ROW+5, COL+2).value = str(round(short_5/total_short, 3) * 100)+"%"
+    if (long_5/total_long) >= (short_5/total_short):sheet.cell(ROW+6, COL+1).value = "做多 轧差量为"+str(long_5-short_5)
+    else:sheet.cell(ROW+6, COL+1).value = "做空 轧差量为"+str(short_5-long_5)
     COL = 10
     ROW = 60
     sheet.cell(ROW-1, COL).value = "异常值"
@@ -1340,10 +1500,14 @@ def writeToExcel_PF210(book_name, date, var):
     try:
         total_long = PF210_long.get("&nbsp;")
         total_short =  PF210_short.get("&nbsp;")
+        total_long_change = PF210_long_change.get("&nbsp;")
+        total_short_change = PF210_short_change.get("&nbsp;")
         if total_long == None:raise TypeError
     except:
         total_long = PF210_long.get("")
         total_short =  PF210_short.get("")
+        total_long_change = PF210_long_change.get("")
+        total_short_change = PF210_short_change.get("")
     COL = 4
     ROW = 3
     sheet.cell(ROW, COL-1).value=var 
@@ -1433,24 +1597,40 @@ def writeToExcel_PF210(book_name, date, var):
     sheet.cell(ROW, COL).value = "前20仓位总量"
     sheet.cell(ROW, COL+1).value = total_long
     sheet.cell(ROW, COL+2).value = total_short
-    sheet.cell(ROW+1, COL).value = "前5仓位集中度"
-    sheet.cell(ROW+2, COL).value = "前5仓位多空倾向"
+    sheet.cell(ROW+1, COL).value = "前20仓位总变量"
+    sheet.cell(ROW+1, COL+1).value = total_long_change
+    sheet.cell(ROW+1, COL+2).value = total_short_change
+    sheet.cell(ROW+2, COL).value = "前20仓位多空倾向"
+    if total_long_change >= total_short_change:sheet.cell(ROW+2, COL+1).value="做多 轧差量为"+str(total_long-total_short)
+    else:sheet.cell(ROW+2, COL+1).value="做空 轧差量为"+str(total_short-total_long)
     long_5 = 0
+    long_5_change = 0
     short_5 = 0
+    short_5_change = 0
     tem_count = 0
     for key in PF210_long:
         if tem_count == 5:break
         else:tem_count+=1
         long_5 += PF210_long[key]
+        long_5_change = PF210_long_change[key]
     tem_count = 0
     for key in PF210_short:
         if tem_count == 5:break
         else:tem_count+=1
         short_5 += PF210_short[key]
-    sheet.cell(ROW+1, COL+1).value = str(round(long_5/total_long, 3) * 100)+"%"
-    sheet.cell(ROW+1, COL+2).value = str(round(short_5/total_short, 3) * 100)+"%"
-    if (long_5/total_long) >= (short_5/total_short):sheet.cell(ROW+2, COL+2).value = "做多 轧差量为"+str(long_5-short_5)
-    else:sheet.cell(ROW+2, COL+1).value = "做空 轧差量为"+str(short_5-long_5)
+        short_5_change = PF210_short_change[key]
+    sheet.cell(ROW+3, COL).value = "前5仓位总量"
+    sheet.cell(ROW+3, COL+1).value = long_5
+    sheet.cell(ROW+3, COL+2).value = short_5
+    sheet.cell(ROW+4, COL).value = "前5仓位总变量"
+    sheet.cell(ROW+4, COL+1).value = long_5_change
+    sheet.cell(ROW+4, COL+2).value = short_5_change 
+    sheet.cell(ROW+5, COL).value = "前5仓位集中度"
+    sheet.cell(ROW+6, COL).value = "前5仓位多空倾向"
+    sheet.cell(ROW+5, COL+1).value = str(round(long_5/total_long, 3) * 100)+"%"
+    sheet.cell(ROW+5, COL+2).value = str(round(short_5/total_short, 3) * 100)+"%"
+    if (long_5/total_long) >= (short_5/total_short):sheet.cell(ROW+6, COL+1).value = "做多 轧差量为"+str(long_5-short_5)
+    else:sheet.cell(ROW+6, COL+1).value = "做空 轧差量为"+str(short_5-long_5)
     COL = 10
     ROW = 60
     sheet.cell(ROW-1, COL).value = "异常值"
@@ -1505,10 +1685,14 @@ def writeToExcel_lu2209(book_name, date, var):
     try:
         total_long = lu2209_long.get("&nbsp;")
         total_short =  lu2209_short.get("&nbsp;")
+        total_long_change = lu2209_long_change.get("&nbsp;")
+        total_short_change = lu2209_short_change.get("&nbsp;")
         if total_long == None:raise TypeError
     except:
         total_long = lu2209_long.get("")
         total_short =  lu2209_short.get("")
+        total_long_change = lu2209_long_change.get("")
+        total_short_change = lu2209_short_change.get("")
     COL = 4
     ROW = 3
     sheet.cell(ROW, COL-1).value=var 
@@ -1598,24 +1782,40 @@ def writeToExcel_lu2209(book_name, date, var):
     sheet.cell(ROW, COL).value = "前20仓位总量"
     sheet.cell(ROW, COL+1).value = total_long
     sheet.cell(ROW, COL+2).value = total_short
-    sheet.cell(ROW+1, COL).value = "前5仓位集中度"
-    sheet.cell(ROW+2, COL).value = "前5仓位多空倾向"
+    sheet.cell(ROW+1, COL).value = "前20仓位总变量"
+    sheet.cell(ROW+1, COL+1).value = total_long_change
+    sheet.cell(ROW+1, COL+2).value = total_short_change
+    sheet.cell(ROW+2, COL).value = "前20仓位多空倾向"
+    if total_long_change >= total_short_change:sheet.cell(ROW+2, COL+1).value="做多 轧差量为"+str(total_long-total_short)
+    else:sheet.cell(ROW+2, COL+1).value="做空 轧差量为"+str(total_short-total_long)
     long_5 = 0
+    long_5_change = 0
     short_5 = 0
+    short_5_change = 0
     tem_count = 0
     for key in lu2209_long:
         if tem_count == 5:break
         else:tem_count+=1
         long_5 += lu2209_long[key]
+        long_5_change = lu2209_long_change[key]
     tem_count = 0
     for key in lu2209_short:
         if tem_count == 5:break
         else:tem_count+=1
         short_5 += lu2209_short[key]
-    sheet.cell(ROW+1, COL+1).value = str(round(long_5/total_long, 3) * 100)+"%"
-    sheet.cell(ROW+1, COL+2).value = str(round(short_5/total_short, 3) * 100)+"%"
-    if (long_5/total_long) >= (short_5/total_short):sheet.cell(ROW+2, COL+2).value = "做多 轧差量为"+str(long_5-short_5)
-    else:sheet.cell(ROW+2, COL+1).value = "做空 轧差量为"+str(short_5-long_5)
+        short_5_change = lu2209_short_change[key]
+    sheet.cell(ROW+3, COL).value = "前5仓位总量"
+    sheet.cell(ROW+3, COL+1).value = long_5
+    sheet.cell(ROW+3, COL+2).value = short_5
+    sheet.cell(ROW+4, COL).value = "前5仓位总变量"
+    sheet.cell(ROW+4, COL+1).value = long_5_change
+    sheet.cell(ROW+4, COL+2).value = short_5_change 
+    sheet.cell(ROW+5, COL).value = "前5仓位集中度"
+    sheet.cell(ROW+6, COL).value = "前5仓位多空倾向"
+    sheet.cell(ROW+5, COL+1).value = str(round(long_5/total_long, 3) * 100)+"%"
+    sheet.cell(ROW+5, COL+2).value = str(round(short_5/total_short, 3) * 100)+"%"
+    if (long_5/total_long) >= (short_5/total_short):sheet.cell(ROW+6, COL+1).value = "做多 轧差量为"+str(long_5-short_5)
+    else:sheet.cell(ROW+6, COL+1).value = "做空 轧差量为"+str(short_5-long_5)
     COL = 10
     ROW = 60
     sheet.cell(ROW-1, COL).value = "异常值"
@@ -1670,10 +1870,14 @@ def writeToExcel_bu2209(book_name, date, var):
     try:
         total_long = bu2209_long.get("&nbsp;")
         total_short =  bu2209_short.get("&nbsp;")
+        total_long_change = bu2209_long_change.get("&nbsp;")
+        total_short_change = bu2209_short_change.get("&nbsp;")
         if total_long == None:raise TypeError
     except:
         total_long = bu2209_long.get("")
         total_short =  bu2209_short.get("")
+        total_long_change = bu2209_long_change.get("")
+        total_short_change = bu2209_short_change.get("")
     COL = 4
     ROW = 3
     sheet.cell(ROW, COL-1).value=var 
@@ -1763,24 +1967,40 @@ def writeToExcel_bu2209(book_name, date, var):
     sheet.cell(ROW, COL).value = "前20仓位总量"
     sheet.cell(ROW, COL+1).value = total_long
     sheet.cell(ROW, COL+2).value = total_short
-    sheet.cell(ROW+1, COL).value = "前5仓位集中度"
-    sheet.cell(ROW+2, COL).value = "前5仓位多空倾向"
+    sheet.cell(ROW+1, COL).value = "前20仓位总变量"
+    sheet.cell(ROW+1, COL+1).value = total_long_change
+    sheet.cell(ROW+1, COL+2).value = total_short_change
+    sheet.cell(ROW+2, COL).value = "前20仓位多空倾向"
+    if total_long_change >= total_short_change:sheet.cell(ROW+2, COL+1).value="做多 轧差量为"+str(total_long-total_short)
+    else:sheet.cell(ROW+2, COL+1).value="做空 轧差量为"+str(total_short-total_long)
     long_5 = 0
+    long_5_change = 0
     short_5 = 0
+    short_5_change = 0
     tem_count = 0
     for key in bu2209_long:
         if tem_count == 5:break
         else:tem_count+=1
         long_5 += bu2209_long[key]
+        long_5_change = bu2209_long_change[key]
     tem_count = 0
     for key in bu2209_short:
         if tem_count == 5:break
         else:tem_count+=1
         short_5 += bu2209_short[key]
-    sheet.cell(ROW+1, COL+1).value = str(round(long_5/total_long, 3) * 100)+"%"
-    sheet.cell(ROW+1, COL+2).value = str(round(short_5/total_short, 3) * 100)+"%"
-    if (long_5/total_long) >= (short_5/total_short):sheet.cell(ROW+2, COL+2).value = "做多 轧差量为"+str(long_5-short_5)
-    else:sheet.cell(ROW+2, COL+1).value = "做空 轧差量为"+str(short_5-long_5)
+        short_5_change = bu2209_short_change[key]
+    sheet.cell(ROW+3, COL).value = "前5仓位总量"
+    sheet.cell(ROW+3, COL+1).value = long_5
+    sheet.cell(ROW+3, COL+2).value = short_5
+    sheet.cell(ROW+4, COL).value = "前5仓位总变量"
+    sheet.cell(ROW+4, COL+1).value = long_5_change
+    sheet.cell(ROW+4, COL+2).value = short_5_change 
+    sheet.cell(ROW+5, COL).value = "前5仓位集中度"
+    sheet.cell(ROW+6, COL).value = "前5仓位多空倾向"
+    sheet.cell(ROW+5, COL+1).value = str(round(long_5/total_long, 3) * 100)+"%"
+    sheet.cell(ROW+5, COL+2).value = str(round(short_5/total_short, 3) * 100)+"%"
+    if (long_5/total_long) >= (short_5/total_short):sheet.cell(ROW+6, COL+1).value = "做多 轧差量为"+str(long_5-short_5)
+    else:sheet.cell(ROW+6, COL+1).value = "做空 轧差量为"+str(short_5-long_5)
     COL = 10
     ROW = 60
     sheet.cell(ROW-1, COL).value = "异常值"
@@ -1835,10 +2055,14 @@ def writeToExcel_fu2301(book_name, date, var):
     try:
         total_long = fu2301_long.get("&nbsp;")
         total_short =  fu2301_short.get("&nbsp;")
+        total_long_change = fu2301_long_change.get("&nbsp;")
+        total_short_change = fu2301_short_change.get("&nbsp;")
         if total_long == None:raise TypeError
     except:
         total_long = fu2301_long.get("")
         total_short =  fu2301_short.get("")
+        total_long_change = fu2301_long_change.get("")
+        total_short_change = fu2301_short_change.get("")
     COL = 4
     ROW = 3
     sheet.cell(ROW, COL-1).value=var 
@@ -1928,24 +2152,40 @@ def writeToExcel_fu2301(book_name, date, var):
     sheet.cell(ROW, COL).value = "前20仓位总量"
     sheet.cell(ROW, COL+1).value = total_long
     sheet.cell(ROW, COL+2).value = total_short
-    sheet.cell(ROW+1, COL).value = "前5仓位集中度"
-    sheet.cell(ROW+2, COL).value = "前5仓位多空倾向"
+    sheet.cell(ROW+1, COL).value = "前20仓位总变量"
+    sheet.cell(ROW+1, COL+1).value = total_long_change
+    sheet.cell(ROW+1, COL+2).value = total_short_change
+    sheet.cell(ROW+2, COL).value = "前20仓位多空倾向"
+    if total_long_change >= total_short_change:sheet.cell(ROW+2, COL+1).value="做多 轧差量为"+str(total_long-total_short)
+    else:sheet.cell(ROW+2, COL+1).value="做空 轧差量为"+str(total_short-total_long)
     long_5 = 0
+    long_5_change = 0
     short_5 = 0
+    short_5_change = 0
     tem_count = 0
     for key in fu2301_long:
         if tem_count == 5:break
         else:tem_count+=1
         long_5 += fu2301_long[key]
+        long_5_change = fu2301_long_change[key]
     tem_count = 0
     for key in fu2301_short:
         if tem_count == 5:break
         else:tem_count+=1
         short_5 += fu2301_short[key]
-    sheet.cell(ROW+1, COL+1).value = str(round(long_5/total_long, 3) * 100)+"%"
-    sheet.cell(ROW+1, COL+2).value = str(round(short_5/total_short, 3) * 100)+"%"
-    if (long_5/total_long) >= (short_5/total_short):sheet.cell(ROW+2, COL+2).value = "做多 轧差量为"+str(long_5-short_5)
-    else:sheet.cell(ROW+2, COL+1).value = "做空 轧差量为"+str(short_5-long_5)
+        short_5_change = fu2301_short_change[key]
+    sheet.cell(ROW+3, COL).value = "前5仓位总量"
+    sheet.cell(ROW+3, COL+1).value = long_5
+    sheet.cell(ROW+3, COL+2).value = short_5
+    sheet.cell(ROW+4, COL).value = "前5仓位总变量"
+    sheet.cell(ROW+4, COL+1).value = long_5_change
+    sheet.cell(ROW+4, COL+2).value = short_5_change 
+    sheet.cell(ROW+5, COL).value = "前5仓位集中度"
+    sheet.cell(ROW+6, COL).value = "前5仓位多空倾向"
+    sheet.cell(ROW+5, COL+1).value = str(round(long_5/total_long, 3) * 100)+"%"
+    sheet.cell(ROW+5, COL+2).value = str(round(short_5/total_short, 3) * 100)+"%"
+    if (long_5/total_long) >= (short_5/total_short):sheet.cell(ROW+6, COL+1).value = "做多 轧差量为"+str(long_5-short_5)
+    else:sheet.cell(ROW+6, COL+1).value = "做空 轧差量为"+str(short_5-long_5)
     COL = 10
     ROW = 60
     sheet.cell(ROW-1, COL).value = "异常值"
@@ -1984,4 +2224,49 @@ def writeToExcel_fu2301(book_name, date, var):
         ROW +=1
     workbook.save(book_name)
 writeToExcel_fu2301(BOOK_NAME, DATE, "fu2301")
-remove("data.py")
+
+def dataSum(book_name, date, sheet_name):
+    try:workbook = openpyxl.load_workbook(book_name)
+    except: workbook = openpyxl.Workbook()
+    sheets = workbook.sheetnames 
+    sheet=workbook[sheets[0]] 
+    sheet.title = sheet_name
+    sheet.merge_cells('A1:R1')
+    sheet.cell(1,1).value = '化工数据'+date+"汇总"
+    sheet['A1'].alignment = Alignment(horizontal='center', vertical='center')
+
+    ROW_W = 5
+    COL_W = 4
+    sheet.cell(ROW_W-2, COL_W).value = "主流化工品种的多空仓增减"
+    sheet.cell(ROW_W-2, COL_W+5).value = "主流化工品种的异常持仓增减量"
+    for i in range(1, len(sheets)):
+        ws = workbook[sheets[i]]
+        var = ws.title
+        ROW_in = ROW_W
+        COL_in = COL_W
+
+        sheet.cell(ROW_in, COL_in-1).value = var
+        for col in range(3, 8):
+            ROW_W = ROW_in
+            for row in range(59, 67):
+                sheet.cell(ROW_W, COL_W).value = ws.cell(row,col).value
+                ROW_W+=1
+            COL_W+=1
+        
+
+        for col in range(9, 13):
+            ROW_W = ROW_in
+            tem_count = 0
+            for row in range(59, 79):
+                if ws.cell(row,col).value == None and tem_count>6:
+                    break
+                else:
+                    sheet.cell(ROW_W, COL_W).value = ws.cell(row,col).value
+                ROW_W+=1
+                tem_count+=1
+            COL_W+=1
+        COL_W = COL_in
+        ROW_W += 3
+    workbook.save(BOOK_NAME)
+
+dataSum(BOOK_NAME, DATE, "数据汇总")

@@ -6,6 +6,7 @@ from urls import *
 
 STANDARD_TIME = strftime("%Y_%m_%d", localtime())
 
+#预备函数未使用，自定义文件夹
 def makeDir(folder_name=STANDARD_TIME):
     current_path = os.getcwd()
     folder = os.listdir(current_path)
@@ -19,6 +20,7 @@ def makeDir(folder_name=STANDARD_TIME):
         print("---"*8, folder_name, "floder create successfully", "---"*8,)
         return current_path + "/" + folder_name
 
+#预备函数未使用，在特定位置写入文件
 def load_file(response, folder_path, file_name, file_type=""):
     try:
         path = folder_path+"/"+file_name
@@ -29,8 +31,9 @@ def load_file(response, folder_path, file_name, file_type=""):
         for chunk in response.iter_content(chunk_size=1024):  # 每次加载1024字节
             f.write(chunk)
 
-def get_res(url, name, var=""):
 
+#对单个网站进行怕虫，并将结果写成暂存文件
+def get_res(url, name, var=""):
     if "dec" in url:
         try:
             res = requests.post(url=url)
@@ -43,7 +46,6 @@ def get_res(url, name, var=""):
             pass
 
     if res.status_code == 200:
-
         if "ine" in url or "shfe" in url:
             with open(name, "wb") as f:
                 for chunk in res.iter_content(chunk_size=1024):  # 每次加载1024字节
@@ -56,6 +58,7 @@ def get_res(url, name, var=""):
     else:
         print(var+"爬取失败")
 
+#爬虫主函数
 def crawlerMain(date, DL_list):
     try:
         start_time = perf_counter()

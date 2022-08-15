@@ -9,6 +9,7 @@ import os
 # 3、上期所：沥青是BU2209、高硫燃料油或者直接叫燃料油是FU2301。
 # 4、上能所：原油是SC2209、低硫燃料油是LU2209
 
+# 获取当前文件夹下的文件
 def get_filename(var=""):
     fl = os.listdir()
     result=[]
@@ -17,7 +18,7 @@ def get_filename(var=""):
             result.append(file)
     return result
 
-
+# 对两个string类型的函数进行计算
 def intcal(str1, str2):
     str1 = int(re.sub(",", "", str1))
     str2 = int(re.sub(",", "", str2))
@@ -27,9 +28,11 @@ def intcal(str1, str2):
     else:
         return result, False
 
+# 将string类型转变为integer类型
 def getint(str):
     return int(re.sub(",", "", str))
 
+# 分析期货品种属于哪个交易所
 def analysis(var):
     result = ''.join(re.findall(r'[A-Za-z]', var)) 
     # print(result)
@@ -43,10 +46,14 @@ def analysis(var):
         return DL_analysis(var)
     return False
 
+
+# 各个交易所内容解析思路基本相同，都是从服务器返回的文件里提取相关数据，具体差异为不同交易所的数据存储位置和格式不一样，所以提取的方式不一样
+
+
 def SH_analysis(var):
     f = open('SH_Hold.dat', 'r')
 
-
+    # 定义局部变量local variable
     trading_name = []
     trading_hold = []
     trading_hold_change = []
@@ -59,7 +66,11 @@ def SH_analysis(var):
 
 
     SH_file = f.read()
-    info = list(filter(None, re.split(r'{ |}', SH_file)))
+
+
+    info = list(filter(None, re.split(r'{ |}', SH_file)))    #此处比较长，用了多个函数，re代表正则表达式是对字符串的解析包，然后对其结果进行筛选，剔除空的空的字符串
+    
+    #将具体的数值提取到对应的list里
     for li in info:
         if var in li:
             key_info = re.split(r',', li)
@@ -320,6 +331,8 @@ def writeDataFile(var):
             datafile.write("\""+short_name[index].strip()+"\":"+str(getint(short_hold_change[index]))+",\n")
         datafile.write("}\n\n")
 
+
+# 数据解析主函数
 def analysisMain(VARS):
     try:
         for var in VARS:
