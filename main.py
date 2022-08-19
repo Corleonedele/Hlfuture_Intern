@@ -8,7 +8,7 @@ from clean import clean
 
 
 # 定义全局变量 global variable
-DATE = "20220802"
+DATE = "20220815"
 BOOK_NAME = "化工数据汇总"+DATE+".xlsx"
 
 MONITOR_POS = ["永安期货", "海通期货", "中信期货", "国泰期货", "东证期货", "恒力期货", "华泰期货", "新湖期货"]
@@ -26,16 +26,16 @@ def main():
         remove("EXCEL.py")
     except:
         pass
-    # try:
-    #     remove("data.py")
-    # except:
-    #     pass
+    try:
+        remove("data.py")
+    except:
+        pass
     crawler_status = crawlerMain(DATE, DL_LIST)
     #查看爬虫状态，如果爬虫失败则中断程序
     if not crawler_status:return
 
     sleep(2)
-    analysis_status = analysisMain(VAR_LIST)
+    analysis_status = analysisMain(VAR_LIST, DATE)
     #查看数据解析状态，如果解析失败则中断程序
     if not analysis_status:return
 

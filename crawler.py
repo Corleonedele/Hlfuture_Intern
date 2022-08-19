@@ -64,19 +64,27 @@ def crawlerMain(date, DL_list):
         start_time = perf_counter()
 
         #郑商所
-        get_res(ZZ_URL_HOLD_Daily(date, "MA"), "ZZ_MA_Hold.txt", "MA")
-        get_res(ZZ_URL_HOLD_Daily(date, "PF"), "ZZ_PF_Hold.txt", "PF")
-        get_res(ZZ_URL_HOLD_Daily(date, "TA"), "ZZ_TA_Hold.txt", "TA")
-
+        try:
+            get_res(ZZ_URL_HOLD_Daily(date, "MA"), "ZZ_MA_"+date+"_Hold.txt", "MA")
+        except:
+            print("ZZ_MA_"+date+"爬取失败")
+        try:
+            get_res(ZZ_URL_HOLD_Daily(date, "PF"), "ZZ_PF_"+date+"_Hold.txt", "PF")
+        except:
+            print("ZZ_PF_"+date+"爬取失败")
+        try:
+            get_res(ZZ_URL_HOLD_Daily(date, "TA"), "ZZ_TA_"+date+"_Hold.txt", "TA")
+        except:
+            print("ZZ_TA_"+date+"爬取失败")
         #大商所
         for var in DL_list:
-            get_res(DL_URL_HOLD_Daily(date, var), "DL_"+var+"_Hold.txt", var)
+            get_res(DL_URL_HOLD_Daily(date, var), "DL_"+var+"_"+date+"_Hold.txt", var)
 
         #上期所
-        get_res(SH_URL_HOLD_Daily(date), "SH_Hold.dat", "SH")
+        get_res(SH_URL_HOLD_Daily(date), "SH_"+date+"_Hold.dat", "SH")
 
         #上能所
-        get_res(SH_URL_HOLD_Daily(date), "INE_Hold.dat", "INE")
+        get_res(SH_URL_HOLD_Daily(date), "INE_"+date+"_Hold.dat", "INE")
         end_time = perf_counter()
         print("爬取共用时:", end_time-start_time, "s")
         return True

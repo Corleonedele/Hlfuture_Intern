@@ -1,4 +1,4 @@
-#此文件可忽略
+
 import openpyxl
 from os import remove
 from openpyxl.styles import Alignment, PatternFill
@@ -15,6 +15,29 @@ def writeToExcel_eb2209(book_name, date, var):
     sheet.cell(1,1).value = '化工数据'+date+"汇总"
     sheet['A1'].alignment = Alignment(horizontal='center', vertical='center')
     ALERT = PatternFill('solid', fgColor="ffc7ce")
+    ALERT_LIST = []
+    for key in eb2209_long_change:
+        if key == "" or key == "&nbsp;":
+            continue
+        try:
+            if eb2209_long_change[key] - eb2209_short_change[key] >= 0:
+                ALERT_LIST.append(eb2209_long_change[key] - eb2209_short_change[key])
+            else: 
+                ALERT_LIST.append(eb2209_short_change[key] - eb2209_long_change[key])
+        except:
+            pass
+    for key in eb2209_short_change:
+        if key == "" or key == "&nbsp;":
+            continue
+        try:
+            if eb2209_long_change[key] - eb2209_short_change[key] >= 0:
+                ALERT_LIST.append(eb2209_long_change[key] - eb2209_short_change[key])
+            else: 
+                ALERT_LIST.append(eb2209_short_change[key] - eb2209_long_change[key])
+        except:
+            pass
+    ALERT_LIST = list(set(ALERT_LIST))
+    ALERT_VALUE = sum(ALERT_LIST)/len(ALERT_LIST)
     ALERT_long = []
     ALERT_short = []
     try:
@@ -28,6 +51,7 @@ def writeToExcel_eb2209(book_name, date, var):
         total_short =  eb2209_short.get("")
         total_long_change = eb2209_long_change.get("")
         total_short_change = eb2209_short_change.get("")
+
     COL = 4
     ROW = 3
     sheet.cell(ROW, COL-1).value=var 
@@ -81,7 +105,7 @@ def writeToExcel_eb2209(book_name, date, var):
             sheet.cell(ROW, COL+5).value = eb2209_short_change[key]
             val = eb2209_long_change[key] - eb2209_short_change[key]
             sheet.cell(ROW, COL+6).value = val
-            if abs(val) > 5000:
+            if abs(val) > ALERT_VALUE:
                 sheet.cell(ROW, COL+6).fill = ALERT
                 ALERT_long.append(key)
         except:
@@ -104,12 +128,15 @@ def writeToExcel_eb2209(book_name, date, var):
             sheet.cell(ROW, COL+5).value = eb2209_long_change[key]
             val = eb2209_long_change[key] - eb2209_short_change[key]
             sheet.cell(ROW, COL+6).value = val
-            if abs(val) > 5000:
+            if abs(val) > ALERT_VALUE:
                 sheet.cell(ROW, COL+6).fill = ALERT
                 ALERT_short.append(key)
         except:
             pass
         ROW+=1
+    sheet.cell(ROW+1, COL+5).value = "异常阈值"
+    sheet.cell(ROW+1, COL+6).value = ALERT_VALUE
+
     COL = 4
     ROW = 60
     sheet.cell(ROW-1, COL+1).value = "多仓"
@@ -200,6 +227,29 @@ def writeToExcel_eg2209(book_name, date, var):
     sheet.cell(1,1).value = '化工数据'+date+"汇总"
     sheet['A1'].alignment = Alignment(horizontal='center', vertical='center')
     ALERT = PatternFill('solid', fgColor="ffc7ce")
+    ALERT_LIST = []
+    for key in eg2209_long_change:
+        if key == "" or key == "&nbsp;":
+            continue
+        try:
+            if eg2209_long_change[key] - eg2209_short_change[key] >= 0:
+                ALERT_LIST.append(eg2209_long_change[key] - eg2209_short_change[key])
+            else: 
+                ALERT_LIST.append(eg2209_short_change[key] - eg2209_long_change[key])
+        except:
+            pass
+    for key in eg2209_short_change:
+        if key == "" or key == "&nbsp;":
+            continue
+        try:
+            if eg2209_long_change[key] - eg2209_short_change[key] >= 0:
+                ALERT_LIST.append(eg2209_long_change[key] - eg2209_short_change[key])
+            else: 
+                ALERT_LIST.append(eg2209_short_change[key] - eg2209_long_change[key])
+        except:
+            pass
+    ALERT_LIST = list(set(ALERT_LIST))
+    ALERT_VALUE = sum(ALERT_LIST)/len(ALERT_LIST)
     ALERT_long = []
     ALERT_short = []
     try:
@@ -213,6 +263,7 @@ def writeToExcel_eg2209(book_name, date, var):
         total_short =  eg2209_short.get("")
         total_long_change = eg2209_long_change.get("")
         total_short_change = eg2209_short_change.get("")
+
     COL = 4
     ROW = 3
     sheet.cell(ROW, COL-1).value=var 
@@ -266,7 +317,7 @@ def writeToExcel_eg2209(book_name, date, var):
             sheet.cell(ROW, COL+5).value = eg2209_short_change[key]
             val = eg2209_long_change[key] - eg2209_short_change[key]
             sheet.cell(ROW, COL+6).value = val
-            if abs(val) > 5000:
+            if abs(val) > ALERT_VALUE:
                 sheet.cell(ROW, COL+6).fill = ALERT
                 ALERT_long.append(key)
         except:
@@ -289,12 +340,15 @@ def writeToExcel_eg2209(book_name, date, var):
             sheet.cell(ROW, COL+5).value = eg2209_long_change[key]
             val = eg2209_long_change[key] - eg2209_short_change[key]
             sheet.cell(ROW, COL+6).value = val
-            if abs(val) > 5000:
+            if abs(val) > ALERT_VALUE:
                 sheet.cell(ROW, COL+6).fill = ALERT
                 ALERT_short.append(key)
         except:
             pass
         ROW+=1
+    sheet.cell(ROW+1, COL+5).value = "异常阈值"
+    sheet.cell(ROW+1, COL+6).value = ALERT_VALUE
+
     COL = 4
     ROW = 60
     sheet.cell(ROW-1, COL+1).value = "多仓"
@@ -385,6 +439,29 @@ def writeToExcel_pg2209(book_name, date, var):
     sheet.cell(1,1).value = '化工数据'+date+"汇总"
     sheet['A1'].alignment = Alignment(horizontal='center', vertical='center')
     ALERT = PatternFill('solid', fgColor="ffc7ce")
+    ALERT_LIST = []
+    for key in pg2209_long_change:
+        if key == "" or key == "&nbsp;":
+            continue
+        try:
+            if pg2209_long_change[key] - pg2209_short_change[key] >= 0:
+                ALERT_LIST.append(pg2209_long_change[key] - pg2209_short_change[key])
+            else: 
+                ALERT_LIST.append(pg2209_short_change[key] - pg2209_long_change[key])
+        except:
+            pass
+    for key in pg2209_short_change:
+        if key == "" or key == "&nbsp;":
+            continue
+        try:
+            if pg2209_long_change[key] - pg2209_short_change[key] >= 0:
+                ALERT_LIST.append(pg2209_long_change[key] - pg2209_short_change[key])
+            else: 
+                ALERT_LIST.append(pg2209_short_change[key] - pg2209_long_change[key])
+        except:
+            pass
+    ALERT_LIST = list(set(ALERT_LIST))
+    ALERT_VALUE = sum(ALERT_LIST)/len(ALERT_LIST)
     ALERT_long = []
     ALERT_short = []
     try:
@@ -398,6 +475,7 @@ def writeToExcel_pg2209(book_name, date, var):
         total_short =  pg2209_short.get("")
         total_long_change = pg2209_long_change.get("")
         total_short_change = pg2209_short_change.get("")
+
     COL = 4
     ROW = 3
     sheet.cell(ROW, COL-1).value=var 
@@ -451,7 +529,7 @@ def writeToExcel_pg2209(book_name, date, var):
             sheet.cell(ROW, COL+5).value = pg2209_short_change[key]
             val = pg2209_long_change[key] - pg2209_short_change[key]
             sheet.cell(ROW, COL+6).value = val
-            if abs(val) > 5000:
+            if abs(val) > ALERT_VALUE:
                 sheet.cell(ROW, COL+6).fill = ALERT
                 ALERT_long.append(key)
         except:
@@ -474,12 +552,15 @@ def writeToExcel_pg2209(book_name, date, var):
             sheet.cell(ROW, COL+5).value = pg2209_long_change[key]
             val = pg2209_long_change[key] - pg2209_short_change[key]
             sheet.cell(ROW, COL+6).value = val
-            if abs(val) > 5000:
+            if abs(val) > ALERT_VALUE:
                 sheet.cell(ROW, COL+6).fill = ALERT
                 ALERT_short.append(key)
         except:
             pass
         ROW+=1
+    sheet.cell(ROW+1, COL+5).value = "异常阈值"
+    sheet.cell(ROW+1, COL+6).value = ALERT_VALUE
+
     COL = 4
     ROW = 60
     sheet.cell(ROW-1, COL+1).value = "多仓"
@@ -570,6 +651,29 @@ def writeToExcel_pp2209(book_name, date, var):
     sheet.cell(1,1).value = '化工数据'+date+"汇总"
     sheet['A1'].alignment = Alignment(horizontal='center', vertical='center')
     ALERT = PatternFill('solid', fgColor="ffc7ce")
+    ALERT_LIST = []
+    for key in pp2209_long_change:
+        if key == "" or key == "&nbsp;":
+            continue
+        try:
+            if pp2209_long_change[key] - pp2209_short_change[key] >= 0:
+                ALERT_LIST.append(pp2209_long_change[key] - pp2209_short_change[key])
+            else: 
+                ALERT_LIST.append(pp2209_short_change[key] - pp2209_long_change[key])
+        except:
+            pass
+    for key in pp2209_short_change:
+        if key == "" or key == "&nbsp;":
+            continue
+        try:
+            if pp2209_long_change[key] - pp2209_short_change[key] >= 0:
+                ALERT_LIST.append(pp2209_long_change[key] - pp2209_short_change[key])
+            else: 
+                ALERT_LIST.append(pp2209_short_change[key] - pp2209_long_change[key])
+        except:
+            pass
+    ALERT_LIST = list(set(ALERT_LIST))
+    ALERT_VALUE = sum(ALERT_LIST)/len(ALERT_LIST)
     ALERT_long = []
     ALERT_short = []
     try:
@@ -583,6 +687,7 @@ def writeToExcel_pp2209(book_name, date, var):
         total_short =  pp2209_short.get("")
         total_long_change = pp2209_long_change.get("")
         total_short_change = pp2209_short_change.get("")
+
     COL = 4
     ROW = 3
     sheet.cell(ROW, COL-1).value=var 
@@ -636,7 +741,7 @@ def writeToExcel_pp2209(book_name, date, var):
             sheet.cell(ROW, COL+5).value = pp2209_short_change[key]
             val = pp2209_long_change[key] - pp2209_short_change[key]
             sheet.cell(ROW, COL+6).value = val
-            if abs(val) > 5000:
+            if abs(val) > ALERT_VALUE:
                 sheet.cell(ROW, COL+6).fill = ALERT
                 ALERT_long.append(key)
         except:
@@ -659,12 +764,15 @@ def writeToExcel_pp2209(book_name, date, var):
             sheet.cell(ROW, COL+5).value = pp2209_long_change[key]
             val = pp2209_long_change[key] - pp2209_short_change[key]
             sheet.cell(ROW, COL+6).value = val
-            if abs(val) > 5000:
+            if abs(val) > ALERT_VALUE:
                 sheet.cell(ROW, COL+6).fill = ALERT
                 ALERT_short.append(key)
         except:
             pass
         ROW+=1
+    sheet.cell(ROW+1, COL+5).value = "异常阈值"
+    sheet.cell(ROW+1, COL+6).value = ALERT_VALUE
+
     COL = 4
     ROW = 60
     sheet.cell(ROW-1, COL+1).value = "多仓"
@@ -755,6 +863,29 @@ def writeToExcel_l2209(book_name, date, var):
     sheet.cell(1,1).value = '化工数据'+date+"汇总"
     sheet['A1'].alignment = Alignment(horizontal='center', vertical='center')
     ALERT = PatternFill('solid', fgColor="ffc7ce")
+    ALERT_LIST = []
+    for key in l2209_long_change:
+        if key == "" or key == "&nbsp;":
+            continue
+        try:
+            if l2209_long_change[key] - l2209_short_change[key] >= 0:
+                ALERT_LIST.append(l2209_long_change[key] - l2209_short_change[key])
+            else: 
+                ALERT_LIST.append(l2209_short_change[key] - l2209_long_change[key])
+        except:
+            pass
+    for key in l2209_short_change:
+        if key == "" or key == "&nbsp;":
+            continue
+        try:
+            if l2209_long_change[key] - l2209_short_change[key] >= 0:
+                ALERT_LIST.append(l2209_long_change[key] - l2209_short_change[key])
+            else: 
+                ALERT_LIST.append(l2209_short_change[key] - l2209_long_change[key])
+        except:
+            pass
+    ALERT_LIST = list(set(ALERT_LIST))
+    ALERT_VALUE = sum(ALERT_LIST)/len(ALERT_LIST)
     ALERT_long = []
     ALERT_short = []
     try:
@@ -768,6 +899,7 @@ def writeToExcel_l2209(book_name, date, var):
         total_short =  l2209_short.get("")
         total_long_change = l2209_long_change.get("")
         total_short_change = l2209_short_change.get("")
+
     COL = 4
     ROW = 3
     sheet.cell(ROW, COL-1).value=var 
@@ -821,7 +953,7 @@ def writeToExcel_l2209(book_name, date, var):
             sheet.cell(ROW, COL+5).value = l2209_short_change[key]
             val = l2209_long_change[key] - l2209_short_change[key]
             sheet.cell(ROW, COL+6).value = val
-            if abs(val) > 5000:
+            if abs(val) > ALERT_VALUE:
                 sheet.cell(ROW, COL+6).fill = ALERT
                 ALERT_long.append(key)
         except:
@@ -844,12 +976,15 @@ def writeToExcel_l2209(book_name, date, var):
             sheet.cell(ROW, COL+5).value = l2209_long_change[key]
             val = l2209_long_change[key] - l2209_short_change[key]
             sheet.cell(ROW, COL+6).value = val
-            if abs(val) > 5000:
+            if abs(val) > ALERT_VALUE:
                 sheet.cell(ROW, COL+6).fill = ALERT
                 ALERT_short.append(key)
         except:
             pass
         ROW+=1
+    sheet.cell(ROW+1, COL+5).value = "异常阈值"
+    sheet.cell(ROW+1, COL+6).value = ALERT_VALUE
+
     COL = 4
     ROW = 60
     sheet.cell(ROW-1, COL+1).value = "多仓"
@@ -940,6 +1075,29 @@ def writeToExcel_v2209(book_name, date, var):
     sheet.cell(1,1).value = '化工数据'+date+"汇总"
     sheet['A1'].alignment = Alignment(horizontal='center', vertical='center')
     ALERT = PatternFill('solid', fgColor="ffc7ce")
+    ALERT_LIST = []
+    for key in v2209_long_change:
+        if key == "" or key == "&nbsp;":
+            continue
+        try:
+            if v2209_long_change[key] - v2209_short_change[key] >= 0:
+                ALERT_LIST.append(v2209_long_change[key] - v2209_short_change[key])
+            else: 
+                ALERT_LIST.append(v2209_short_change[key] - v2209_long_change[key])
+        except:
+            pass
+    for key in v2209_short_change:
+        if key == "" or key == "&nbsp;":
+            continue
+        try:
+            if v2209_long_change[key] - v2209_short_change[key] >= 0:
+                ALERT_LIST.append(v2209_long_change[key] - v2209_short_change[key])
+            else: 
+                ALERT_LIST.append(v2209_short_change[key] - v2209_long_change[key])
+        except:
+            pass
+    ALERT_LIST = list(set(ALERT_LIST))
+    ALERT_VALUE = sum(ALERT_LIST)/len(ALERT_LIST)
     ALERT_long = []
     ALERT_short = []
     try:
@@ -953,6 +1111,7 @@ def writeToExcel_v2209(book_name, date, var):
         total_short =  v2209_short.get("")
         total_long_change = v2209_long_change.get("")
         total_short_change = v2209_short_change.get("")
+
     COL = 4
     ROW = 3
     sheet.cell(ROW, COL-1).value=var 
@@ -1006,7 +1165,7 @@ def writeToExcel_v2209(book_name, date, var):
             sheet.cell(ROW, COL+5).value = v2209_short_change[key]
             val = v2209_long_change[key] - v2209_short_change[key]
             sheet.cell(ROW, COL+6).value = val
-            if abs(val) > 5000:
+            if abs(val) > ALERT_VALUE:
                 sheet.cell(ROW, COL+6).fill = ALERT
                 ALERT_long.append(key)
         except:
@@ -1029,12 +1188,15 @@ def writeToExcel_v2209(book_name, date, var):
             sheet.cell(ROW, COL+5).value = v2209_long_change[key]
             val = v2209_long_change[key] - v2209_short_change[key]
             sheet.cell(ROW, COL+6).value = val
-            if abs(val) > 5000:
+            if abs(val) > ALERT_VALUE:
                 sheet.cell(ROW, COL+6).fill = ALERT
                 ALERT_short.append(key)
         except:
             pass
         ROW+=1
+    sheet.cell(ROW+1, COL+5).value = "异常阈值"
+    sheet.cell(ROW+1, COL+6).value = ALERT_VALUE
+
     COL = 4
     ROW = 60
     sheet.cell(ROW-1, COL+1).value = "多仓"
@@ -1125,6 +1287,29 @@ def writeToExcel_MA209(book_name, date, var):
     sheet.cell(1,1).value = '化工数据'+date+"汇总"
     sheet['A1'].alignment = Alignment(horizontal='center', vertical='center')
     ALERT = PatternFill('solid', fgColor="ffc7ce")
+    ALERT_LIST = []
+    for key in MA209_long_change:
+        if key == "" or key == "&nbsp;":
+            continue
+        try:
+            if MA209_long_change[key] - MA209_short_change[key] >= 0:
+                ALERT_LIST.append(MA209_long_change[key] - MA209_short_change[key])
+            else: 
+                ALERT_LIST.append(MA209_short_change[key] - MA209_long_change[key])
+        except:
+            pass
+    for key in MA209_short_change:
+        if key == "" or key == "&nbsp;":
+            continue
+        try:
+            if MA209_long_change[key] - MA209_short_change[key] >= 0:
+                ALERT_LIST.append(MA209_long_change[key] - MA209_short_change[key])
+            else: 
+                ALERT_LIST.append(MA209_short_change[key] - MA209_long_change[key])
+        except:
+            pass
+    ALERT_LIST = list(set(ALERT_LIST))
+    ALERT_VALUE = sum(ALERT_LIST)/len(ALERT_LIST)
     ALERT_long = []
     ALERT_short = []
     try:
@@ -1138,6 +1323,7 @@ def writeToExcel_MA209(book_name, date, var):
         total_short =  MA209_short.get("")
         total_long_change = MA209_long_change.get("")
         total_short_change = MA209_short_change.get("")
+
     COL = 4
     ROW = 3
     sheet.cell(ROW, COL-1).value=var 
@@ -1191,7 +1377,7 @@ def writeToExcel_MA209(book_name, date, var):
             sheet.cell(ROW, COL+5).value = MA209_short_change[key]
             val = MA209_long_change[key] - MA209_short_change[key]
             sheet.cell(ROW, COL+6).value = val
-            if abs(val) > 5000:
+            if abs(val) > ALERT_VALUE:
                 sheet.cell(ROW, COL+6).fill = ALERT
                 ALERT_long.append(key)
         except:
@@ -1214,12 +1400,15 @@ def writeToExcel_MA209(book_name, date, var):
             sheet.cell(ROW, COL+5).value = MA209_long_change[key]
             val = MA209_long_change[key] - MA209_short_change[key]
             sheet.cell(ROW, COL+6).value = val
-            if abs(val) > 5000:
+            if abs(val) > ALERT_VALUE:
                 sheet.cell(ROW, COL+6).fill = ALERT
                 ALERT_short.append(key)
         except:
             pass
         ROW+=1
+    sheet.cell(ROW+1, COL+5).value = "异常阈值"
+    sheet.cell(ROW+1, COL+6).value = ALERT_VALUE
+
     COL = 4
     ROW = 60
     sheet.cell(ROW-1, COL+1).value = "多仓"
@@ -1310,6 +1499,29 @@ def writeToExcel_TA209(book_name, date, var):
     sheet.cell(1,1).value = '化工数据'+date+"汇总"
     sheet['A1'].alignment = Alignment(horizontal='center', vertical='center')
     ALERT = PatternFill('solid', fgColor="ffc7ce")
+    ALERT_LIST = []
+    for key in TA209_long_change:
+        if key == "" or key == "&nbsp;":
+            continue
+        try:
+            if TA209_long_change[key] - TA209_short_change[key] >= 0:
+                ALERT_LIST.append(TA209_long_change[key] - TA209_short_change[key])
+            else: 
+                ALERT_LIST.append(TA209_short_change[key] - TA209_long_change[key])
+        except:
+            pass
+    for key in TA209_short_change:
+        if key == "" or key == "&nbsp;":
+            continue
+        try:
+            if TA209_long_change[key] - TA209_short_change[key] >= 0:
+                ALERT_LIST.append(TA209_long_change[key] - TA209_short_change[key])
+            else: 
+                ALERT_LIST.append(TA209_short_change[key] - TA209_long_change[key])
+        except:
+            pass
+    ALERT_LIST = list(set(ALERT_LIST))
+    ALERT_VALUE = sum(ALERT_LIST)/len(ALERT_LIST)
     ALERT_long = []
     ALERT_short = []
     try:
@@ -1323,6 +1535,7 @@ def writeToExcel_TA209(book_name, date, var):
         total_short =  TA209_short.get("")
         total_long_change = TA209_long_change.get("")
         total_short_change = TA209_short_change.get("")
+
     COL = 4
     ROW = 3
     sheet.cell(ROW, COL-1).value=var 
@@ -1376,7 +1589,7 @@ def writeToExcel_TA209(book_name, date, var):
             sheet.cell(ROW, COL+5).value = TA209_short_change[key]
             val = TA209_long_change[key] - TA209_short_change[key]
             sheet.cell(ROW, COL+6).value = val
-            if abs(val) > 5000:
+            if abs(val) > ALERT_VALUE:
                 sheet.cell(ROW, COL+6).fill = ALERT
                 ALERT_long.append(key)
         except:
@@ -1399,12 +1612,15 @@ def writeToExcel_TA209(book_name, date, var):
             sheet.cell(ROW, COL+5).value = TA209_long_change[key]
             val = TA209_long_change[key] - TA209_short_change[key]
             sheet.cell(ROW, COL+6).value = val
-            if abs(val) > 5000:
+            if abs(val) > ALERT_VALUE:
                 sheet.cell(ROW, COL+6).fill = ALERT
                 ALERT_short.append(key)
         except:
             pass
         ROW+=1
+    sheet.cell(ROW+1, COL+5).value = "异常阈值"
+    sheet.cell(ROW+1, COL+6).value = ALERT_VALUE
+
     COL = 4
     ROW = 60
     sheet.cell(ROW-1, COL+1).value = "多仓"
@@ -1495,6 +1711,29 @@ def writeToExcel_PF210(book_name, date, var):
     sheet.cell(1,1).value = '化工数据'+date+"汇总"
     sheet['A1'].alignment = Alignment(horizontal='center', vertical='center')
     ALERT = PatternFill('solid', fgColor="ffc7ce")
+    ALERT_LIST = []
+    for key in PF210_long_change:
+        if key == "" or key == "&nbsp;":
+            continue
+        try:
+            if PF210_long_change[key] - PF210_short_change[key] >= 0:
+                ALERT_LIST.append(PF210_long_change[key] - PF210_short_change[key])
+            else: 
+                ALERT_LIST.append(PF210_short_change[key] - PF210_long_change[key])
+        except:
+            pass
+    for key in PF210_short_change:
+        if key == "" or key == "&nbsp;":
+            continue
+        try:
+            if PF210_long_change[key] - PF210_short_change[key] >= 0:
+                ALERT_LIST.append(PF210_long_change[key] - PF210_short_change[key])
+            else: 
+                ALERT_LIST.append(PF210_short_change[key] - PF210_long_change[key])
+        except:
+            pass
+    ALERT_LIST = list(set(ALERT_LIST))
+    ALERT_VALUE = sum(ALERT_LIST)/len(ALERT_LIST)
     ALERT_long = []
     ALERT_short = []
     try:
@@ -1508,6 +1747,7 @@ def writeToExcel_PF210(book_name, date, var):
         total_short =  PF210_short.get("")
         total_long_change = PF210_long_change.get("")
         total_short_change = PF210_short_change.get("")
+
     COL = 4
     ROW = 3
     sheet.cell(ROW, COL-1).value=var 
@@ -1561,7 +1801,7 @@ def writeToExcel_PF210(book_name, date, var):
             sheet.cell(ROW, COL+5).value = PF210_short_change[key]
             val = PF210_long_change[key] - PF210_short_change[key]
             sheet.cell(ROW, COL+6).value = val
-            if abs(val) > 5000:
+            if abs(val) > ALERT_VALUE:
                 sheet.cell(ROW, COL+6).fill = ALERT
                 ALERT_long.append(key)
         except:
@@ -1584,12 +1824,15 @@ def writeToExcel_PF210(book_name, date, var):
             sheet.cell(ROW, COL+5).value = PF210_long_change[key]
             val = PF210_long_change[key] - PF210_short_change[key]
             sheet.cell(ROW, COL+6).value = val
-            if abs(val) > 5000:
+            if abs(val) > ALERT_VALUE:
                 sheet.cell(ROW, COL+6).fill = ALERT
                 ALERT_short.append(key)
         except:
             pass
         ROW+=1
+    sheet.cell(ROW+1, COL+5).value = "异常阈值"
+    sheet.cell(ROW+1, COL+6).value = ALERT_VALUE
+
     COL = 4
     ROW = 60
     sheet.cell(ROW-1, COL+1).value = "多仓"
@@ -1680,6 +1923,29 @@ def writeToExcel_lu2209(book_name, date, var):
     sheet.cell(1,1).value = '化工数据'+date+"汇总"
     sheet['A1'].alignment = Alignment(horizontal='center', vertical='center')
     ALERT = PatternFill('solid', fgColor="ffc7ce")
+    ALERT_LIST = []
+    for key in lu2209_long_change:
+        if key == "" or key == "&nbsp;":
+            continue
+        try:
+            if lu2209_long_change[key] - lu2209_short_change[key] >= 0:
+                ALERT_LIST.append(lu2209_long_change[key] - lu2209_short_change[key])
+            else: 
+                ALERT_LIST.append(lu2209_short_change[key] - lu2209_long_change[key])
+        except:
+            pass
+    for key in lu2209_short_change:
+        if key == "" or key == "&nbsp;":
+            continue
+        try:
+            if lu2209_long_change[key] - lu2209_short_change[key] >= 0:
+                ALERT_LIST.append(lu2209_long_change[key] - lu2209_short_change[key])
+            else: 
+                ALERT_LIST.append(lu2209_short_change[key] - lu2209_long_change[key])
+        except:
+            pass
+    ALERT_LIST = list(set(ALERT_LIST))
+    ALERT_VALUE = sum(ALERT_LIST)/len(ALERT_LIST)
     ALERT_long = []
     ALERT_short = []
     try:
@@ -1693,6 +1959,7 @@ def writeToExcel_lu2209(book_name, date, var):
         total_short =  lu2209_short.get("")
         total_long_change = lu2209_long_change.get("")
         total_short_change = lu2209_short_change.get("")
+
     COL = 4
     ROW = 3
     sheet.cell(ROW, COL-1).value=var 
@@ -1746,7 +2013,7 @@ def writeToExcel_lu2209(book_name, date, var):
             sheet.cell(ROW, COL+5).value = lu2209_short_change[key]
             val = lu2209_long_change[key] - lu2209_short_change[key]
             sheet.cell(ROW, COL+6).value = val
-            if abs(val) > 5000:
+            if abs(val) > ALERT_VALUE:
                 sheet.cell(ROW, COL+6).fill = ALERT
                 ALERT_long.append(key)
         except:
@@ -1769,12 +2036,15 @@ def writeToExcel_lu2209(book_name, date, var):
             sheet.cell(ROW, COL+5).value = lu2209_long_change[key]
             val = lu2209_long_change[key] - lu2209_short_change[key]
             sheet.cell(ROW, COL+6).value = val
-            if abs(val) > 5000:
+            if abs(val) > ALERT_VALUE:
                 sheet.cell(ROW, COL+6).fill = ALERT
                 ALERT_short.append(key)
         except:
             pass
         ROW+=1
+    sheet.cell(ROW+1, COL+5).value = "异常阈值"
+    sheet.cell(ROW+1, COL+6).value = ALERT_VALUE
+
     COL = 4
     ROW = 60
     sheet.cell(ROW-1, COL+1).value = "多仓"
@@ -1865,6 +2135,29 @@ def writeToExcel_bu2209(book_name, date, var):
     sheet.cell(1,1).value = '化工数据'+date+"汇总"
     sheet['A1'].alignment = Alignment(horizontal='center', vertical='center')
     ALERT = PatternFill('solid', fgColor="ffc7ce")
+    ALERT_LIST = []
+    for key in bu2209_long_change:
+        if key == "" or key == "&nbsp;":
+            continue
+        try:
+            if bu2209_long_change[key] - bu2209_short_change[key] >= 0:
+                ALERT_LIST.append(bu2209_long_change[key] - bu2209_short_change[key])
+            else: 
+                ALERT_LIST.append(bu2209_short_change[key] - bu2209_long_change[key])
+        except:
+            pass
+    for key in bu2209_short_change:
+        if key == "" or key == "&nbsp;":
+            continue
+        try:
+            if bu2209_long_change[key] - bu2209_short_change[key] >= 0:
+                ALERT_LIST.append(bu2209_long_change[key] - bu2209_short_change[key])
+            else: 
+                ALERT_LIST.append(bu2209_short_change[key] - bu2209_long_change[key])
+        except:
+            pass
+    ALERT_LIST = list(set(ALERT_LIST))
+    ALERT_VALUE = sum(ALERT_LIST)/len(ALERT_LIST)
     ALERT_long = []
     ALERT_short = []
     try:
@@ -1878,6 +2171,7 @@ def writeToExcel_bu2209(book_name, date, var):
         total_short =  bu2209_short.get("")
         total_long_change = bu2209_long_change.get("")
         total_short_change = bu2209_short_change.get("")
+
     COL = 4
     ROW = 3
     sheet.cell(ROW, COL-1).value=var 
@@ -1931,7 +2225,7 @@ def writeToExcel_bu2209(book_name, date, var):
             sheet.cell(ROW, COL+5).value = bu2209_short_change[key]
             val = bu2209_long_change[key] - bu2209_short_change[key]
             sheet.cell(ROW, COL+6).value = val
-            if abs(val) > 5000:
+            if abs(val) > ALERT_VALUE:
                 sheet.cell(ROW, COL+6).fill = ALERT
                 ALERT_long.append(key)
         except:
@@ -1954,12 +2248,15 @@ def writeToExcel_bu2209(book_name, date, var):
             sheet.cell(ROW, COL+5).value = bu2209_long_change[key]
             val = bu2209_long_change[key] - bu2209_short_change[key]
             sheet.cell(ROW, COL+6).value = val
-            if abs(val) > 5000:
+            if abs(val) > ALERT_VALUE:
                 sheet.cell(ROW, COL+6).fill = ALERT
                 ALERT_short.append(key)
         except:
             pass
         ROW+=1
+    sheet.cell(ROW+1, COL+5).value = "异常阈值"
+    sheet.cell(ROW+1, COL+6).value = ALERT_VALUE
+
     COL = 4
     ROW = 60
     sheet.cell(ROW-1, COL+1).value = "多仓"
@@ -2050,6 +2347,29 @@ def writeToExcel_fu2301(book_name, date, var):
     sheet.cell(1,1).value = '化工数据'+date+"汇总"
     sheet['A1'].alignment = Alignment(horizontal='center', vertical='center')
     ALERT = PatternFill('solid', fgColor="ffc7ce")
+    ALERT_LIST = []
+    for key in fu2301_long_change:
+        if key == "" or key == "&nbsp;":
+            continue
+        try:
+            if fu2301_long_change[key] - fu2301_short_change[key] >= 0:
+                ALERT_LIST.append(fu2301_long_change[key] - fu2301_short_change[key])
+            else: 
+                ALERT_LIST.append(fu2301_short_change[key] - fu2301_long_change[key])
+        except:
+            pass
+    for key in fu2301_short_change:
+        if key == "" or key == "&nbsp;":
+            continue
+        try:
+            if fu2301_long_change[key] - fu2301_short_change[key] >= 0:
+                ALERT_LIST.append(fu2301_long_change[key] - fu2301_short_change[key])
+            else: 
+                ALERT_LIST.append(fu2301_short_change[key] - fu2301_long_change[key])
+        except:
+            pass
+    ALERT_LIST = list(set(ALERT_LIST))
+    ALERT_VALUE = sum(ALERT_LIST)/len(ALERT_LIST)
     ALERT_long = []
     ALERT_short = []
     try:
@@ -2063,6 +2383,7 @@ def writeToExcel_fu2301(book_name, date, var):
         total_short =  fu2301_short.get("")
         total_long_change = fu2301_long_change.get("")
         total_short_change = fu2301_short_change.get("")
+
     COL = 4
     ROW = 3
     sheet.cell(ROW, COL-1).value=var 
@@ -2116,7 +2437,7 @@ def writeToExcel_fu2301(book_name, date, var):
             sheet.cell(ROW, COL+5).value = fu2301_short_change[key]
             val = fu2301_long_change[key] - fu2301_short_change[key]
             sheet.cell(ROW, COL+6).value = val
-            if abs(val) > 5000:
+            if abs(val) > ALERT_VALUE:
                 sheet.cell(ROW, COL+6).fill = ALERT
                 ALERT_long.append(key)
         except:
@@ -2139,12 +2460,15 @@ def writeToExcel_fu2301(book_name, date, var):
             sheet.cell(ROW, COL+5).value = fu2301_long_change[key]
             val = fu2301_long_change[key] - fu2301_short_change[key]
             sheet.cell(ROW, COL+6).value = val
-            if abs(val) > 5000:
+            if abs(val) > ALERT_VALUE:
                 sheet.cell(ROW, COL+6).fill = ALERT
                 ALERT_short.append(key)
         except:
             pass
         ROW+=1
+    sheet.cell(ROW+1, COL+5).value = "异常阈值"
+    sheet.cell(ROW+1, COL+6).value = ALERT_VALUE
+
     COL = 4
     ROW = 60
     sheet.cell(ROW-1, COL+1).value = "多仓"
@@ -2234,11 +2558,15 @@ def dataSum(book_name, date, sheet_name):
     sheet.merge_cells('A1:R1')
     sheet.cell(1,1).value = '化工数据'+date+"汇总"
     sheet['A1'].alignment = Alignment(horizontal='center', vertical='center')
-
+    TITLE = PatternFill('solid', fgColor="faebd7")
+    LONG = PatternFill('solid', fgColor="ffc7ce")
+    SHORT = PatternFill('solid', fgColor="7fffd4")
     ROW_W = 5
     COL_W = 4
-    sheet.cell(ROW_W-2, COL_W).value = "主流化工品种的多空仓增减"
-    sheet.cell(ROW_W-2, COL_W+5).value = "主流化工品种的异常持仓增减量"
+    sheet.merge_cells('E3:G3')
+    sheet.cell(ROW_W-2, COL_W+1).value = "主流化工品种的多空仓增减"
+    sheet.merge_cells('J3:L3')
+    sheet.cell(ROW_W-2, COL_W+6).value = "主流化工品种的异常持仓增减量"
     for i in range(1, len(sheets)):
         ws = workbook[sheets[i]]
         var = ws.title
@@ -2262,6 +2590,10 @@ def dataSum(book_name, date, sheet_name):
                     break
                 else:
                     sheet.cell(ROW_W, COL_W).value = ws.cell(row,col).value
+                    if sheet.cell(ROW_W, COL_W).value == "做多":
+                        sheet.cell(ROW_W, COL_W).fill = LONG
+                    elif sheet.cell(ROW_W, COL_W).value == "做空":
+                        sheet.cell(ROW_W, COL_W).fill = SHORT
                 ROW_W+=1
                 tem_count+=1
             COL_W+=1

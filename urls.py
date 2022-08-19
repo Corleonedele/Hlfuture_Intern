@@ -42,7 +42,7 @@ def DL_URL_Daily(require_time="20220801"):
 
 def ZZ_URL_HOLD_Daily(require_time="20220801", require_type=""):
     """require_type are MA, PF, TA"""
-    return "http://www.czce.com.cn/cn/DFSStaticFiles/Future/2022/"+require_time+"/FutureDataHolding"+require_type+".htm"
+    return "http://www.czce.com.cn/cn/DFSStaticFiles/Future/"+require_time[:4]+"/"+require_time+"/FutureDataHolding"+require_type+".htm"
 
 def DL_URL_HOLD_Daily(require_time="20220801", require_type="", future_or_option="0"):
     """require_type are 种类+数字 eg. eg2209"""

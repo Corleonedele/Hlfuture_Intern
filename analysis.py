@@ -16,6 +16,9 @@ def get_filename(var=""):
     for file in fl:
         if var in file:
             result.append(file)
+    if result == []:
+        print("没有找到文件")
+        return False
     return result
 
 # 对两个string类型的函数进行计算
@@ -33,25 +36,26 @@ def getint(str):
     return int(re.sub(",", "", str))
 
 # 分析期货品种属于哪个交易所
-def analysis(var):
+def analysis(var, date):
     result = ''.join(re.findall(r'[A-Za-z]', var)) 
     # print(result)
     if result in ["MA", "TA", "PF"]:
-        return ZZ_analysis(var)
+        return ZZ_analysis(var, one_file_date=date)
     elif result in ["lu", "sc"]:
-        return INE_analysis(var)
+        return INE_analysis(var, one_file_date=date)
     elif result in ["bu", "fu"]:
-        return SH_analysis(var)
+        return SH_analysis(var, one_file_date=date)
     elif result in ["eb", "eg", "pg", "pp", "l", "v"]:
-        return DL_analysis(var)
+        return DL_analysis(var, one_file_date=date)
     return False
+
 
 
 # 各个交易所内容解析思路基本相同，都是从服务器返回的文件里提取相关数据，具体差异为不同交易所的数据存储位置和格式不一样，所以提取的方式不一样
 
 
-def SH_analysis(var):
-    f = open('SH_Hold.dat', 'r')
+def SH_analysis(var, one_file_status=True, one_file_date=""):
+    f = open("SH_"+one_file_date+"_Hold.dat", 'r')
 
     # 定义局部变量local variable
     trading_name = []
@@ -93,8 +97,10 @@ def SH_analysis(var):
         status = True
     return trading_name, trading_hold, trading_hold_change, long_name, long_hold, long_hold_change, short_name, short_hold, short_hold_change, status
 
-def INE_analysis(var):
-    f = open('INE_Hold.dat', 'r')
+def INE_analysis(var, one_file_status=True, one_file_date=""):
+    f = open("INE_"+one_file_date+"_Hold.dat", 'r')
+
+
 
     trading_name = []
     trading_hold = []
@@ -105,6 +111,9 @@ def INE_analysis(var):
     short_name = []
     short_hold = []
     short_hold_change = []
+
+
+
 
 
     INE_file = f.read()
@@ -131,9 +140,9 @@ def INE_analysis(var):
         status = True
     return trading_name, trading_hold, trading_hold_change, long_name, long_hold, long_hold_change, short_name, short_hold, short_hold_change, status
 
-def DL_analysis(var):    
+def DL_analysis(var, one_file_status=True, one_file_date=""):    
 
-    DL_files = get_filename("DL")
+    DL_files_tem = get_filename("DL")
 
     trading_name = []
     trading_hold = []
@@ -145,6 +154,12 @@ def DL_analysis(var):
     short_hold = []
     short_hold_change = []
 
+    DL_files = []
+    for f in DL_files_tem:
+        if var in f and one_file_date in f:
+            DL_files.append(f)
+
+
     for file in DL_files:
         if var not in file:
             continue
@@ -153,7 +168,7 @@ def DL_analysis(var):
 
         with open(file, 'r') as ope_file:
             file_info = ope_file.readlines()
-            if len(file_info) < 440:
+            if len(file_info) < 400:
                 print(file, "Empty info")
                 continue
 
@@ -204,8 +219,8 @@ def DL_analysis(var):
         status = True
     return trading_name, trading_hold, trading_hold_change, long_name, long_hold, long_hold_change, short_name, short_hold, short_hold_change, status
 
-def ZZ_analysis(var):
-    ZZ_files = get_filename("ZZ")
+def ZZ_analysis(var, one_file_status=True, one_file_date=""):
+    ZZ_files_tem = get_filename("ZZ")
 
     trading_name = []
     trading_hold = []
@@ -217,7 +232,14 @@ def ZZ_analysis(var):
     short_hold = []
     short_hold_change = []
 
+    ZZ_files = []
+    for f in ZZ_files_tem:
+        if var[:2] in f and one_file_date in f:
+            ZZ_files.append(f)
+    
+
     for file in ZZ_files:
+
         if var[:2] not in file:
             continue
         start = False
@@ -280,21 +302,20 @@ def ZZ_analysis(var):
                             short_hold_change.append(info)
                             p_count = 0      
 
-    if trading_hold == []:
-        print(var, "数据提取失败")
-        status = False
-    elif len(trading_name) == len(trading_hold):
-        print(var, "数据提取成功")
-        status = True
-    return trading_name, trading_hold, trading_hold_change, long_name, long_hold, long_hold_change, short_name, short_hold, short_hold_change, status
+        if trading_hold == []:
+            print(var, "数据提取失败")
+            status = False
+        elif len(trading_name) == len(trading_hold):
+            print(var, "数据提取成功")
+            status = True
+        return trading_name, trading_hold, trading_hold_change, long_name, long_hold, long_hold_change, short_name, short_hold, short_hold_change, status
 
 
 
 
-
-def writeDataFile(var):
+def writeDataFile(var, date):
     with open("data.py",'a') as datafile:
-        trading_name, trading_hold, trading_hold_change, long_name, long_hold, long_hold_change, short_name, short_hold, short_hold_change, status = analysis(var)
+        trading_name, trading_hold, trading_hold_change, long_name, long_hold, long_hold_change, short_name, short_hold, short_hold_change, status = analysis(var, date)
 
         if status == False:
             print(var, "数据出错，请检查")
@@ -333,13 +354,12 @@ def writeDataFile(var):
 
 
 # 数据解析主函数
-def analysisMain(VARS):
+def analysisMain(VARS, date):
     try:
         for var in VARS:
-            writeDataFile(var)
+            writeDataFile(var, date)
         return True
     except:
         print("数据读取失败，程序中断")
         return False
-
 
