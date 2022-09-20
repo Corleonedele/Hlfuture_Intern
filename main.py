@@ -55,4 +55,4 @@ def main():
 
 # 从本文件执行时，调用该函数
 if __name__ == '__main__':
-    analysis_status = analysisMain(VAR_LIST, DATE)
+    main()

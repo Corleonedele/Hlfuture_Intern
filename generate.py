@@ -3,7 +3,7 @@ from threshold import VAR_LIST as VAR_LIST_T
 #生成总结数据
 def generateSum():
     with open("EXCEL.py",'a') as funciontFile:
-        with open("dataSum.conf", 'r') as exampleFile:
+        with open("dataSum.conf", 'r', encoding='utf-8') as exampleFile:
                 for line in exampleFile:
                     funciontFile.write(line)
 
