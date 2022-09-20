@@ -11,6 +11,7 @@ def generateSum():
 def generateMain(VAR_LIST):
     with open("EXCEL.py",'a') as funciontFile: #打开一个叫EXCEL.py的文件
         funciontFile.write("""
+# coding=utf-8
 import openpyxl
 from os import remove
 from openpyxl.styles import Alignment, PatternFill
@@ -20,7 +21,7 @@ from thresholdData import *
         """)
 
         for index, var in enumerate(VAR_LIST):
-            with open("example.conf", 'r') as exampleFile:
+            with open("example.conf", 'r', encoding='utf-8') as exampleFile:
                 for line in exampleFile:
                     if "HIS" in line:
                         rep_var = VAR_LIST_T[index]

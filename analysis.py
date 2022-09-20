@@ -356,6 +356,8 @@ def writeDataFile(var, date):
 # 数据解析主函数
 def analysisMain(VARS, date):
     try:
+        with open("data.py",'a') as datafile:
+            datafile.write("# coding=utf-8\n")
         for var in VARS:
             try:
                 writeDataFile(var, date)

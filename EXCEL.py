@@ -1,4 +1,5 @@
 
+# coding=utf-8
 import openpyxl
 from os import remove
 from openpyxl.styles import Alignment, PatternFill
