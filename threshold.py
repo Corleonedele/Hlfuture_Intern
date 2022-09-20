@@ -128,7 +128,7 @@ def thresholdMain():
             print("-"*30, "爬取日期:", date, "爬取失败")
 
     with open("thresholdData.py", "a") as dataFile:
-        dataFile.write("# coding=utf-8\n")
+        dataFile.write("# -*- coding: utf-8 -*-\n")
 
     for var in VAR_LIST:
         writeThresholdValue(var, date_list)

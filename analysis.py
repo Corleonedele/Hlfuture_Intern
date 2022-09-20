@@ -357,7 +357,7 @@ def writeDataFile(var, date):
 def analysisMain(VARS, date):
     try:
         with open("data.py",'a') as datafile:
-            datafile.write("# coding=utf-8\n")
+            datafile.write("# -*- coding: utf-8 -*-\n")
         for var in VARS:
             try:
                 writeDataFile(var, date)

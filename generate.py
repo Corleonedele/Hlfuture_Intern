@@ -11,7 +11,7 @@ def generateSum():
 def generateMain(VAR_LIST):
     with open("EXCEL.py",'a') as funciontFile: #打开一个叫EXCEL.py的文件
         funciontFile.write("""
-# coding=utf-8
+# -*- coding: utf-8 -*-
 import openpyxl
 from os import remove
 from openpyxl.styles import Alignment, PatternFill
