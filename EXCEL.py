@@ -4,6 +4,7 @@ from os import remove
 from openpyxl.styles import Alignment, PatternFill
 from data import *
 from main import BOOK_NAME, DATE, MONITOR_POS
+from thresholdData import *
         
 def writeToExcel_eb2209(book_name, date, var):
     try:workbook = openpyxl.load_workbook(book_name)
@@ -38,6 +39,7 @@ def writeToExcel_eb2209(book_name, date, var):
             pass
     ALERT_LIST = list(set(ALERT_LIST))
     ALERT_VALUE = sum(ALERT_LIST)/len(ALERT_LIST)
+    ALERT_VALUE2 = eb2109_90
     ALERT_long = []
     ALERT_short = []
     try:
@@ -87,7 +89,8 @@ def writeToExcel_eb2209(book_name, date, var):
     sheet.cell(ROW, COL+3).value="多头-空头"
     sheet.cell(ROW, COL+4).value="多头变量"
     sheet.cell(ROW, COL+5).value="空头变量"
-    sheet.cell(ROW, COL+6).value="多头-空头"
+    sheet.cell(ROW, COL+6).value="多头-空头 当天阈值"
+    sheet.cell(ROW, COL+7).value="多头-空头 历史阈值"
     COL = 12
     ROW = 4
     for key in eb2209_long:
@@ -105,8 +108,12 @@ def writeToExcel_eb2209(book_name, date, var):
             sheet.cell(ROW, COL+5).value = eb2209_short_change[key]
             val = eb2209_long_change[key] - eb2209_short_change[key]
             sheet.cell(ROW, COL+6).value = val
+            sheet.cell(ROW, COL+7).value = val
             if abs(val) > ALERT_VALUE:
                 sheet.cell(ROW, COL+6).fill = ALERT
+                ALERT_long.append(key)
+            if abs(val) > ALERT_VALUE2:
+                sheet.cell(ROW, COL+7).fill = ALERT
                 ALERT_long.append(key)
         except:
             pass
@@ -128,15 +135,19 @@ def writeToExcel_eb2209(book_name, date, var):
             sheet.cell(ROW, COL+5).value = eb2209_long_change[key]
             val = eb2209_long_change[key] - eb2209_short_change[key]
             sheet.cell(ROW, COL+6).value = val
+            sheet.cell(ROW, COL+7).value = val
             if abs(val) > ALERT_VALUE:
                 sheet.cell(ROW, COL+6).fill = ALERT
                 ALERT_short.append(key)
+            if abs(val) > ALERT_VALUE2:
+                sheet.cell(ROW, COL+7).fill = ALERT
+                ALERT_long.append(key)
         except:
             pass
         ROW+=1
     sheet.cell(ROW+1, COL+5).value = "异常阈值"
     sheet.cell(ROW+1, COL+6).value = ALERT_VALUE
-
+    sheet.cell(ROW+1, COL+7).value = ALERT_VALUE2
     COL = 4
     ROW = 60
     sheet.cell(ROW-1, COL+1).value = "多仓"
@@ -250,6 +261,7 @@ def writeToExcel_eg2209(book_name, date, var):
             pass
     ALERT_LIST = list(set(ALERT_LIST))
     ALERT_VALUE = sum(ALERT_LIST)/len(ALERT_LIST)
+    ALERT_VALUE2 = eg2109_90
     ALERT_long = []
     ALERT_short = []
     try:
@@ -299,7 +311,8 @@ def writeToExcel_eg2209(book_name, date, var):
     sheet.cell(ROW, COL+3).value="多头-空头"
     sheet.cell(ROW, COL+4).value="多头变量"
     sheet.cell(ROW, COL+5).value="空头变量"
-    sheet.cell(ROW, COL+6).value="多头-空头"
+    sheet.cell(ROW, COL+6).value="多头-空头 当天阈值"
+    sheet.cell(ROW, COL+7).value="多头-空头 历史阈值"
     COL = 12
     ROW = 4
     for key in eg2209_long:
@@ -317,8 +330,12 @@ def writeToExcel_eg2209(book_name, date, var):
             sheet.cell(ROW, COL+5).value = eg2209_short_change[key]
             val = eg2209_long_change[key] - eg2209_short_change[key]
             sheet.cell(ROW, COL+6).value = val
+            sheet.cell(ROW, COL+7).value = val
             if abs(val) > ALERT_VALUE:
                 sheet.cell(ROW, COL+6).fill = ALERT
+                ALERT_long.append(key)
+            if abs(val) > ALERT_VALUE2:
+                sheet.cell(ROW, COL+7).fill = ALERT
                 ALERT_long.append(key)
         except:
             pass
@@ -340,15 +357,19 @@ def writeToExcel_eg2209(book_name, date, var):
             sheet.cell(ROW, COL+5).value = eg2209_long_change[key]
             val = eg2209_long_change[key] - eg2209_short_change[key]
             sheet.cell(ROW, COL+6).value = val
+            sheet.cell(ROW, COL+7).value = val
             if abs(val) > ALERT_VALUE:
                 sheet.cell(ROW, COL+6).fill = ALERT
                 ALERT_short.append(key)
+            if abs(val) > ALERT_VALUE2:
+                sheet.cell(ROW, COL+7).fill = ALERT
+                ALERT_long.append(key)
         except:
             pass
         ROW+=1
     sheet.cell(ROW+1, COL+5).value = "异常阈值"
     sheet.cell(ROW+1, COL+6).value = ALERT_VALUE
-
+    sheet.cell(ROW+1, COL+7).value = ALERT_VALUE2
     COL = 4
     ROW = 60
     sheet.cell(ROW-1, COL+1).value = "多仓"
@@ -462,6 +483,7 @@ def writeToExcel_pg2209(book_name, date, var):
             pass
     ALERT_LIST = list(set(ALERT_LIST))
     ALERT_VALUE = sum(ALERT_LIST)/len(ALERT_LIST)
+    ALERT_VALUE2 = pg2110_90
     ALERT_long = []
     ALERT_short = []
     try:
@@ -511,7 +533,8 @@ def writeToExcel_pg2209(book_name, date, var):
     sheet.cell(ROW, COL+3).value="多头-空头"
     sheet.cell(ROW, COL+4).value="多头变量"
     sheet.cell(ROW, COL+5).value="空头变量"
-    sheet.cell(ROW, COL+6).value="多头-空头"
+    sheet.cell(ROW, COL+6).value="多头-空头 当天阈值"
+    sheet.cell(ROW, COL+7).value="多头-空头 历史阈值"
     COL = 12
     ROW = 4
     for key in pg2209_long:
@@ -529,8 +552,12 @@ def writeToExcel_pg2209(book_name, date, var):
             sheet.cell(ROW, COL+5).value = pg2209_short_change[key]
             val = pg2209_long_change[key] - pg2209_short_change[key]
             sheet.cell(ROW, COL+6).value = val
+            sheet.cell(ROW, COL+7).value = val
             if abs(val) > ALERT_VALUE:
                 sheet.cell(ROW, COL+6).fill = ALERT
+                ALERT_long.append(key)
+            if abs(val) > ALERT_VALUE2:
+                sheet.cell(ROW, COL+7).fill = ALERT
                 ALERT_long.append(key)
         except:
             pass
@@ -552,15 +579,19 @@ def writeToExcel_pg2209(book_name, date, var):
             sheet.cell(ROW, COL+5).value = pg2209_long_change[key]
             val = pg2209_long_change[key] - pg2209_short_change[key]
             sheet.cell(ROW, COL+6).value = val
+            sheet.cell(ROW, COL+7).value = val
             if abs(val) > ALERT_VALUE:
                 sheet.cell(ROW, COL+6).fill = ALERT
                 ALERT_short.append(key)
+            if abs(val) > ALERT_VALUE2:
+                sheet.cell(ROW, COL+7).fill = ALERT
+                ALERT_long.append(key)
         except:
             pass
         ROW+=1
     sheet.cell(ROW+1, COL+5).value = "异常阈值"
     sheet.cell(ROW+1, COL+6).value = ALERT_VALUE
-
+    sheet.cell(ROW+1, COL+7).value = ALERT_VALUE2
     COL = 4
     ROW = 60
     sheet.cell(ROW-1, COL+1).value = "多仓"
@@ -674,6 +705,7 @@ def writeToExcel_pp2209(book_name, date, var):
             pass
     ALERT_LIST = list(set(ALERT_LIST))
     ALERT_VALUE = sum(ALERT_LIST)/len(ALERT_LIST)
+    ALERT_VALUE2 = pp2109_90
     ALERT_long = []
     ALERT_short = []
     try:
@@ -723,7 +755,8 @@ def writeToExcel_pp2209(book_name, date, var):
     sheet.cell(ROW, COL+3).value="多头-空头"
     sheet.cell(ROW, COL+4).value="多头变量"
     sheet.cell(ROW, COL+5).value="空头变量"
-    sheet.cell(ROW, COL+6).value="多头-空头"
+    sheet.cell(ROW, COL+6).value="多头-空头 当天阈值"
+    sheet.cell(ROW, COL+7).value="多头-空头 历史阈值"
     COL = 12
     ROW = 4
     for key in pp2209_long:
@@ -741,8 +774,12 @@ def writeToExcel_pp2209(book_name, date, var):
             sheet.cell(ROW, COL+5).value = pp2209_short_change[key]
             val = pp2209_long_change[key] - pp2209_short_change[key]
             sheet.cell(ROW, COL+6).value = val
+            sheet.cell(ROW, COL+7).value = val
             if abs(val) > ALERT_VALUE:
                 sheet.cell(ROW, COL+6).fill = ALERT
+                ALERT_long.append(key)
+            if abs(val) > ALERT_VALUE2:
+                sheet.cell(ROW, COL+7).fill = ALERT
                 ALERT_long.append(key)
         except:
             pass
@@ -764,15 +801,19 @@ def writeToExcel_pp2209(book_name, date, var):
             sheet.cell(ROW, COL+5).value = pp2209_long_change[key]
             val = pp2209_long_change[key] - pp2209_short_change[key]
             sheet.cell(ROW, COL+6).value = val
+            sheet.cell(ROW, COL+7).value = val
             if abs(val) > ALERT_VALUE:
                 sheet.cell(ROW, COL+6).fill = ALERT
                 ALERT_short.append(key)
+            if abs(val) > ALERT_VALUE2:
+                sheet.cell(ROW, COL+7).fill = ALERT
+                ALERT_long.append(key)
         except:
             pass
         ROW+=1
     sheet.cell(ROW+1, COL+5).value = "异常阈值"
     sheet.cell(ROW+1, COL+6).value = ALERT_VALUE
-
+    sheet.cell(ROW+1, COL+7).value = ALERT_VALUE2
     COL = 4
     ROW = 60
     sheet.cell(ROW-1, COL+1).value = "多仓"
@@ -886,6 +927,7 @@ def writeToExcel_l2209(book_name, date, var):
             pass
     ALERT_LIST = list(set(ALERT_LIST))
     ALERT_VALUE = sum(ALERT_LIST)/len(ALERT_LIST)
+    ALERT_VALUE2 = l2109_90
     ALERT_long = []
     ALERT_short = []
     try:
@@ -935,7 +977,8 @@ def writeToExcel_l2209(book_name, date, var):
     sheet.cell(ROW, COL+3).value="多头-空头"
     sheet.cell(ROW, COL+4).value="多头变量"
     sheet.cell(ROW, COL+5).value="空头变量"
-    sheet.cell(ROW, COL+6).value="多头-空头"
+    sheet.cell(ROW, COL+6).value="多头-空头 当天阈值"
+    sheet.cell(ROW, COL+7).value="多头-空头 历史阈值"
     COL = 12
     ROW = 4
     for key in l2209_long:
@@ -953,8 +996,12 @@ def writeToExcel_l2209(book_name, date, var):
             sheet.cell(ROW, COL+5).value = l2209_short_change[key]
             val = l2209_long_change[key] - l2209_short_change[key]
             sheet.cell(ROW, COL+6).value = val
+            sheet.cell(ROW, COL+7).value = val
             if abs(val) > ALERT_VALUE:
                 sheet.cell(ROW, COL+6).fill = ALERT
+                ALERT_long.append(key)
+            if abs(val) > ALERT_VALUE2:
+                sheet.cell(ROW, COL+7).fill = ALERT
                 ALERT_long.append(key)
         except:
             pass
@@ -976,15 +1023,19 @@ def writeToExcel_l2209(book_name, date, var):
             sheet.cell(ROW, COL+5).value = l2209_long_change[key]
             val = l2209_long_change[key] - l2209_short_change[key]
             sheet.cell(ROW, COL+6).value = val
+            sheet.cell(ROW, COL+7).value = val
             if abs(val) > ALERT_VALUE:
                 sheet.cell(ROW, COL+6).fill = ALERT
                 ALERT_short.append(key)
+            if abs(val) > ALERT_VALUE2:
+                sheet.cell(ROW, COL+7).fill = ALERT
+                ALERT_long.append(key)
         except:
             pass
         ROW+=1
     sheet.cell(ROW+1, COL+5).value = "异常阈值"
     sheet.cell(ROW+1, COL+6).value = ALERT_VALUE
-
+    sheet.cell(ROW+1, COL+7).value = ALERT_VALUE2
     COL = 4
     ROW = 60
     sheet.cell(ROW-1, COL+1).value = "多仓"
@@ -1098,6 +1149,7 @@ def writeToExcel_v2209(book_name, date, var):
             pass
     ALERT_LIST = list(set(ALERT_LIST))
     ALERT_VALUE = sum(ALERT_LIST)/len(ALERT_LIST)
+    ALERT_VALUE2 = v2109_90
     ALERT_long = []
     ALERT_short = []
     try:
@@ -1147,7 +1199,8 @@ def writeToExcel_v2209(book_name, date, var):
     sheet.cell(ROW, COL+3).value="多头-空头"
     sheet.cell(ROW, COL+4).value="多头变量"
     sheet.cell(ROW, COL+5).value="空头变量"
-    sheet.cell(ROW, COL+6).value="多头-空头"
+    sheet.cell(ROW, COL+6).value="多头-空头 当天阈值"
+    sheet.cell(ROW, COL+7).value="多头-空头 历史阈值"
     COL = 12
     ROW = 4
     for key in v2209_long:
@@ -1165,8 +1218,12 @@ def writeToExcel_v2209(book_name, date, var):
             sheet.cell(ROW, COL+5).value = v2209_short_change[key]
             val = v2209_long_change[key] - v2209_short_change[key]
             sheet.cell(ROW, COL+6).value = val
+            sheet.cell(ROW, COL+7).value = val
             if abs(val) > ALERT_VALUE:
                 sheet.cell(ROW, COL+6).fill = ALERT
+                ALERT_long.append(key)
+            if abs(val) > ALERT_VALUE2:
+                sheet.cell(ROW, COL+7).fill = ALERT
                 ALERT_long.append(key)
         except:
             pass
@@ -1188,15 +1245,19 @@ def writeToExcel_v2209(book_name, date, var):
             sheet.cell(ROW, COL+5).value = v2209_long_change[key]
             val = v2209_long_change[key] - v2209_short_change[key]
             sheet.cell(ROW, COL+6).value = val
+            sheet.cell(ROW, COL+7).value = val
             if abs(val) > ALERT_VALUE:
                 sheet.cell(ROW, COL+6).fill = ALERT
                 ALERT_short.append(key)
+            if abs(val) > ALERT_VALUE2:
+                sheet.cell(ROW, COL+7).fill = ALERT
+                ALERT_long.append(key)
         except:
             pass
         ROW+=1
     sheet.cell(ROW+1, COL+5).value = "异常阈值"
     sheet.cell(ROW+1, COL+6).value = ALERT_VALUE
-
+    sheet.cell(ROW+1, COL+7).value = ALERT_VALUE2
     COL = 4
     ROW = 60
     sheet.cell(ROW-1, COL+1).value = "多仓"
@@ -1310,6 +1371,7 @@ def writeToExcel_MA209(book_name, date, var):
             pass
     ALERT_LIST = list(set(ALERT_LIST))
     ALERT_VALUE = sum(ALERT_LIST)/len(ALERT_LIST)
+    ALERT_VALUE2 = MA109_90
     ALERT_long = []
     ALERT_short = []
     try:
@@ -1359,7 +1421,8 @@ def writeToExcel_MA209(book_name, date, var):
     sheet.cell(ROW, COL+3).value="多头-空头"
     sheet.cell(ROW, COL+4).value="多头变量"
     sheet.cell(ROW, COL+5).value="空头变量"
-    sheet.cell(ROW, COL+6).value="多头-空头"
+    sheet.cell(ROW, COL+6).value="多头-空头 当天阈值"
+    sheet.cell(ROW, COL+7).value="多头-空头 历史阈值"
     COL = 12
     ROW = 4
     for key in MA209_long:
@@ -1377,8 +1440,12 @@ def writeToExcel_MA209(book_name, date, var):
             sheet.cell(ROW, COL+5).value = MA209_short_change[key]
             val = MA209_long_change[key] - MA209_short_change[key]
             sheet.cell(ROW, COL+6).value = val
+            sheet.cell(ROW, COL+7).value = val
             if abs(val) > ALERT_VALUE:
                 sheet.cell(ROW, COL+6).fill = ALERT
+                ALERT_long.append(key)
+            if abs(val) > ALERT_VALUE2:
+                sheet.cell(ROW, COL+7).fill = ALERT
                 ALERT_long.append(key)
         except:
             pass
@@ -1400,15 +1467,19 @@ def writeToExcel_MA209(book_name, date, var):
             sheet.cell(ROW, COL+5).value = MA209_long_change[key]
             val = MA209_long_change[key] - MA209_short_change[key]
             sheet.cell(ROW, COL+6).value = val
+            sheet.cell(ROW, COL+7).value = val
             if abs(val) > ALERT_VALUE:
                 sheet.cell(ROW, COL+6).fill = ALERT
                 ALERT_short.append(key)
+            if abs(val) > ALERT_VALUE2:
+                sheet.cell(ROW, COL+7).fill = ALERT
+                ALERT_long.append(key)
         except:
             pass
         ROW+=1
     sheet.cell(ROW+1, COL+5).value = "异常阈值"
     sheet.cell(ROW+1, COL+6).value = ALERT_VALUE
-
+    sheet.cell(ROW+1, COL+7).value = ALERT_VALUE2
     COL = 4
     ROW = 60
     sheet.cell(ROW-1, COL+1).value = "多仓"
@@ -1522,6 +1593,7 @@ def writeToExcel_TA209(book_name, date, var):
             pass
     ALERT_LIST = list(set(ALERT_LIST))
     ALERT_VALUE = sum(ALERT_LIST)/len(ALERT_LIST)
+    ALERT_VALUE2 = TA109_90
     ALERT_long = []
     ALERT_short = []
     try:
@@ -1571,7 +1643,8 @@ def writeToExcel_TA209(book_name, date, var):
     sheet.cell(ROW, COL+3).value="多头-空头"
     sheet.cell(ROW, COL+4).value="多头变量"
     sheet.cell(ROW, COL+5).value="空头变量"
-    sheet.cell(ROW, COL+6).value="多头-空头"
+    sheet.cell(ROW, COL+6).value="多头-空头 当天阈值"
+    sheet.cell(ROW, COL+7).value="多头-空头 历史阈值"
     COL = 12
     ROW = 4
     for key in TA209_long:
@@ -1589,8 +1662,12 @@ def writeToExcel_TA209(book_name, date, var):
             sheet.cell(ROW, COL+5).value = TA209_short_change[key]
             val = TA209_long_change[key] - TA209_short_change[key]
             sheet.cell(ROW, COL+6).value = val
+            sheet.cell(ROW, COL+7).value = val
             if abs(val) > ALERT_VALUE:
                 sheet.cell(ROW, COL+6).fill = ALERT
+                ALERT_long.append(key)
+            if abs(val) > ALERT_VALUE2:
+                sheet.cell(ROW, COL+7).fill = ALERT
                 ALERT_long.append(key)
         except:
             pass
@@ -1612,15 +1689,19 @@ def writeToExcel_TA209(book_name, date, var):
             sheet.cell(ROW, COL+5).value = TA209_long_change[key]
             val = TA209_long_change[key] - TA209_short_change[key]
             sheet.cell(ROW, COL+6).value = val
+            sheet.cell(ROW, COL+7).value = val
             if abs(val) > ALERT_VALUE:
                 sheet.cell(ROW, COL+6).fill = ALERT
                 ALERT_short.append(key)
+            if abs(val) > ALERT_VALUE2:
+                sheet.cell(ROW, COL+7).fill = ALERT
+                ALERT_long.append(key)
         except:
             pass
         ROW+=1
     sheet.cell(ROW+1, COL+5).value = "异常阈值"
     sheet.cell(ROW+1, COL+6).value = ALERT_VALUE
-
+    sheet.cell(ROW+1, COL+7).value = ALERT_VALUE2
     COL = 4
     ROW = 60
     sheet.cell(ROW-1, COL+1).value = "多仓"
@@ -1734,6 +1815,7 @@ def writeToExcel_PF210(book_name, date, var):
             pass
     ALERT_LIST = list(set(ALERT_LIST))
     ALERT_VALUE = sum(ALERT_LIST)/len(ALERT_LIST)
+    ALERT_VALUE2 = PF110_90
     ALERT_long = []
     ALERT_short = []
     try:
@@ -1783,7 +1865,8 @@ def writeToExcel_PF210(book_name, date, var):
     sheet.cell(ROW, COL+3).value="多头-空头"
     sheet.cell(ROW, COL+4).value="多头变量"
     sheet.cell(ROW, COL+5).value="空头变量"
-    sheet.cell(ROW, COL+6).value="多头-空头"
+    sheet.cell(ROW, COL+6).value="多头-空头 当天阈值"
+    sheet.cell(ROW, COL+7).value="多头-空头 历史阈值"
     COL = 12
     ROW = 4
     for key in PF210_long:
@@ -1801,8 +1884,12 @@ def writeToExcel_PF210(book_name, date, var):
             sheet.cell(ROW, COL+5).value = PF210_short_change[key]
             val = PF210_long_change[key] - PF210_short_change[key]
             sheet.cell(ROW, COL+6).value = val
+            sheet.cell(ROW, COL+7).value = val
             if abs(val) > ALERT_VALUE:
                 sheet.cell(ROW, COL+6).fill = ALERT
+                ALERT_long.append(key)
+            if abs(val) > ALERT_VALUE2:
+                sheet.cell(ROW, COL+7).fill = ALERT
                 ALERT_long.append(key)
         except:
             pass
@@ -1824,15 +1911,19 @@ def writeToExcel_PF210(book_name, date, var):
             sheet.cell(ROW, COL+5).value = PF210_long_change[key]
             val = PF210_long_change[key] - PF210_short_change[key]
             sheet.cell(ROW, COL+6).value = val
+            sheet.cell(ROW, COL+7).value = val
             if abs(val) > ALERT_VALUE:
                 sheet.cell(ROW, COL+6).fill = ALERT
                 ALERT_short.append(key)
+            if abs(val) > ALERT_VALUE2:
+                sheet.cell(ROW, COL+7).fill = ALERT
+                ALERT_long.append(key)
         except:
             pass
         ROW+=1
     sheet.cell(ROW+1, COL+5).value = "异常阈值"
     sheet.cell(ROW+1, COL+6).value = ALERT_VALUE
-
+    sheet.cell(ROW+1, COL+7).value = ALERT_VALUE2
     COL = 4
     ROW = 60
     sheet.cell(ROW-1, COL+1).value = "多仓"
@@ -1946,6 +2037,7 @@ def writeToExcel_lu2209(book_name, date, var):
             pass
     ALERT_LIST = list(set(ALERT_LIST))
     ALERT_VALUE = sum(ALERT_LIST)/len(ALERT_LIST)
+    ALERT_VALUE2 = lu2110_90
     ALERT_long = []
     ALERT_short = []
     try:
@@ -1995,7 +2087,8 @@ def writeToExcel_lu2209(book_name, date, var):
     sheet.cell(ROW, COL+3).value="多头-空头"
     sheet.cell(ROW, COL+4).value="多头变量"
     sheet.cell(ROW, COL+5).value="空头变量"
-    sheet.cell(ROW, COL+6).value="多头-空头"
+    sheet.cell(ROW, COL+6).value="多头-空头 当天阈值"
+    sheet.cell(ROW, COL+7).value="多头-空头 历史阈值"
     COL = 12
     ROW = 4
     for key in lu2209_long:
@@ -2013,8 +2106,12 @@ def writeToExcel_lu2209(book_name, date, var):
             sheet.cell(ROW, COL+5).value = lu2209_short_change[key]
             val = lu2209_long_change[key] - lu2209_short_change[key]
             sheet.cell(ROW, COL+6).value = val
+            sheet.cell(ROW, COL+7).value = val
             if abs(val) > ALERT_VALUE:
                 sheet.cell(ROW, COL+6).fill = ALERT
+                ALERT_long.append(key)
+            if abs(val) > ALERT_VALUE2:
+                sheet.cell(ROW, COL+7).fill = ALERT
                 ALERT_long.append(key)
         except:
             pass
@@ -2036,15 +2133,19 @@ def writeToExcel_lu2209(book_name, date, var):
             sheet.cell(ROW, COL+5).value = lu2209_long_change[key]
             val = lu2209_long_change[key] - lu2209_short_change[key]
             sheet.cell(ROW, COL+6).value = val
+            sheet.cell(ROW, COL+7).value = val
             if abs(val) > ALERT_VALUE:
                 sheet.cell(ROW, COL+6).fill = ALERT
                 ALERT_short.append(key)
+            if abs(val) > ALERT_VALUE2:
+                sheet.cell(ROW, COL+7).fill = ALERT
+                ALERT_long.append(key)
         except:
             pass
         ROW+=1
     sheet.cell(ROW+1, COL+5).value = "异常阈值"
     sheet.cell(ROW+1, COL+6).value = ALERT_VALUE
-
+    sheet.cell(ROW+1, COL+7).value = ALERT_VALUE2
     COL = 4
     ROW = 60
     sheet.cell(ROW-1, COL+1).value = "多仓"
@@ -2158,6 +2259,7 @@ def writeToExcel_bu2209(book_name, date, var):
             pass
     ALERT_LIST = list(set(ALERT_LIST))
     ALERT_VALUE = sum(ALERT_LIST)/len(ALERT_LIST)
+    ALERT_VALUE2 = bu2112_90
     ALERT_long = []
     ALERT_short = []
     try:
@@ -2207,7 +2309,8 @@ def writeToExcel_bu2209(book_name, date, var):
     sheet.cell(ROW, COL+3).value="多头-空头"
     sheet.cell(ROW, COL+4).value="多头变量"
     sheet.cell(ROW, COL+5).value="空头变量"
-    sheet.cell(ROW, COL+6).value="多头-空头"
+    sheet.cell(ROW, COL+6).value="多头-空头 当天阈值"
+    sheet.cell(ROW, COL+7).value="多头-空头 历史阈值"
     COL = 12
     ROW = 4
     for key in bu2209_long:
@@ -2225,8 +2328,12 @@ def writeToExcel_bu2209(book_name, date, var):
             sheet.cell(ROW, COL+5).value = bu2209_short_change[key]
             val = bu2209_long_change[key] - bu2209_short_change[key]
             sheet.cell(ROW, COL+6).value = val
+            sheet.cell(ROW, COL+7).value = val
             if abs(val) > ALERT_VALUE:
                 sheet.cell(ROW, COL+6).fill = ALERT
+                ALERT_long.append(key)
+            if abs(val) > ALERT_VALUE2:
+                sheet.cell(ROW, COL+7).fill = ALERT
                 ALERT_long.append(key)
         except:
             pass
@@ -2248,15 +2355,19 @@ def writeToExcel_bu2209(book_name, date, var):
             sheet.cell(ROW, COL+5).value = bu2209_long_change[key]
             val = bu2209_long_change[key] - bu2209_short_change[key]
             sheet.cell(ROW, COL+6).value = val
+            sheet.cell(ROW, COL+7).value = val
             if abs(val) > ALERT_VALUE:
                 sheet.cell(ROW, COL+6).fill = ALERT
                 ALERT_short.append(key)
+            if abs(val) > ALERT_VALUE2:
+                sheet.cell(ROW, COL+7).fill = ALERT
+                ALERT_long.append(key)
         except:
             pass
         ROW+=1
     sheet.cell(ROW+1, COL+5).value = "异常阈值"
     sheet.cell(ROW+1, COL+6).value = ALERT_VALUE
-
+    sheet.cell(ROW+1, COL+7).value = ALERT_VALUE2
     COL = 4
     ROW = 60
     sheet.cell(ROW-1, COL+1).value = "多仓"
@@ -2370,6 +2481,7 @@ def writeToExcel_fu2301(book_name, date, var):
             pass
     ALERT_LIST = list(set(ALERT_LIST))
     ALERT_VALUE = sum(ALERT_LIST)/len(ALERT_LIST)
+    ALERT_VALUE2 = fu2201_90
     ALERT_long = []
     ALERT_short = []
     try:
@@ -2419,7 +2531,8 @@ def writeToExcel_fu2301(book_name, date, var):
     sheet.cell(ROW, COL+3).value="多头-空头"
     sheet.cell(ROW, COL+4).value="多头变量"
     sheet.cell(ROW, COL+5).value="空头变量"
-    sheet.cell(ROW, COL+6).value="多头-空头"
+    sheet.cell(ROW, COL+6).value="多头-空头 当天阈值"
+    sheet.cell(ROW, COL+7).value="多头-空头 历史阈值"
     COL = 12
     ROW = 4
     for key in fu2301_long:
@@ -2437,8 +2550,12 @@ def writeToExcel_fu2301(book_name, date, var):
             sheet.cell(ROW, COL+5).value = fu2301_short_change[key]
             val = fu2301_long_change[key] - fu2301_short_change[key]
             sheet.cell(ROW, COL+6).value = val
+            sheet.cell(ROW, COL+7).value = val
             if abs(val) > ALERT_VALUE:
                 sheet.cell(ROW, COL+6).fill = ALERT
+                ALERT_long.append(key)
+            if abs(val) > ALERT_VALUE2:
+                sheet.cell(ROW, COL+7).fill = ALERT
                 ALERT_long.append(key)
         except:
             pass
@@ -2460,15 +2577,19 @@ def writeToExcel_fu2301(book_name, date, var):
             sheet.cell(ROW, COL+5).value = fu2301_long_change[key]
             val = fu2301_long_change[key] - fu2301_short_change[key]
             sheet.cell(ROW, COL+6).value = val
+            sheet.cell(ROW, COL+7).value = val
             if abs(val) > ALERT_VALUE:
                 sheet.cell(ROW, COL+6).fill = ALERT
                 ALERT_short.append(key)
+            if abs(val) > ALERT_VALUE2:
+                sheet.cell(ROW, COL+7).fill = ALERT
+                ALERT_long.append(key)
         except:
             pass
         ROW+=1
     sheet.cell(ROW+1, COL+5).value = "异常阈值"
     sheet.cell(ROW+1, COL+6).value = ALERT_VALUE
-
+    sheet.cell(ROW+1, COL+7).value = ALERT_VALUE2
     COL = 4
     ROW = 60
     sheet.cell(ROW-1, COL+1).value = "多仓"

@@ -4,11 +4,12 @@ from analysis import analysisMain
 from crawler import crawlerMain
 from generate import generateMain
 from clean import clean
+from threshold import getTradeDay
 # 文件开头引入相关函数
 
 
 # 定义全局变量 global variable
-DATE = "20220815"
+DATE = "20220810"
 BOOK_NAME = "化工数据汇总"+DATE+".xlsx"
 
 MONITOR_POS = ["永安期货", "海通期货", "中信期货", "国泰期货", "东证期货", "恒力期货", "华泰期货", "新湖期货"]
@@ -37,7 +38,7 @@ def main():
     sleep(2)
     analysis_status = analysisMain(VAR_LIST, DATE)
     #查看数据解析状态，如果解析失败则中断程序
-    if not analysis_status:return
+    # if not analysis_status:return
 
     sleep(2)
     generateMain(VAR_LIST)
@@ -52,7 +53,6 @@ def main():
     end_time = perf_counter()
     print("共用时:", end_time-start_time, "s")
 
-
 # 从本文件执行时，调用该函数
 if __name__ == '__main__':
-    main()
+    analysis_status = analysisMain(VAR_LIST, DATE)

@@ -1,7 +1,5 @@
-
 import re
 import os
-
 
 #主流化工品种主力合约：
 # 1、郑商所：甲醇是MA2209合约、PTA是TA2209合约、短纤是PF2210。
@@ -55,7 +53,7 @@ def analysis(var, date):
 
 
 def SH_analysis(var, one_file_status=True, one_file_date=""):
-    f = open("SH_"+one_file_date+"_Hold.dat", 'r')
+    f = open("SH_"+one_file_date+"_Hold.dat", 'r', encoding="utf-8")
 
     # 定义局部变量local variable
     trading_name = []
@@ -98,7 +96,7 @@ def SH_analysis(var, one_file_status=True, one_file_date=""):
     return trading_name, trading_hold, trading_hold_change, long_name, long_hold, long_hold_change, short_name, short_hold, short_hold_change, status
 
 def INE_analysis(var, one_file_status=True, one_file_date=""):
-    f = open("INE_"+one_file_date+"_Hold.dat", 'r')
+    f = open("INE_"+one_file_date+"_Hold.dat", 'r', encoding='utf-8')
 
 
 
@@ -166,7 +164,7 @@ def DL_analysis(var, one_file_status=True, one_file_date=""):
 
         start = False
 
-        with open(file, 'r') as ope_file:
+        with open(file, 'r', encoding='utf-8') as ope_file:
             file_info = ope_file.readlines()
             if len(file_info) < 400:
                 print(file, "Empty info")
@@ -245,7 +243,7 @@ def ZZ_analysis(var, one_file_status=True, one_file_date=""):
         start = False
         p_start = False
 
-        with open(file, 'r') as ope_file:
+        with open(file, 'r', encoding='utf-8') as ope_file:
             file_info = ope_file.readlines()
 
             if len(file_info) < 400:
@@ -275,7 +273,6 @@ def ZZ_analysis(var, one_file_status=True, one_file_date=""):
                         else:
                             p_start = not p_start
                             continue
-
 
                     if p_start:
                         p_count += 1
@@ -322,42 +319,48 @@ def writeDataFile(var, date):
             return
 
         datafile.write(var+"_trading = {")
-        for index in range(0, len(trading_name)):
-            datafile.write("\""+trading_name[index].strip()+"\":"+str(getint(trading_hold[index]))+",\n")
-        datafile.write("}\n\n")
+        try:
+            for index in range(0, len(trading_name)):
+                datafile.write("\""+trading_name[index].strip()+"\":"+str(getint(trading_hold[index]))+",\n")
+            datafile.write("}\n\n")
 
-        datafile.write(var+"_trading_change = {")
-        for index in range(0, len(trading_name)):
-            datafile.write("\""+trading_name[index].strip()+"\":"+str(getint(trading_hold_change[index]))+",\n")
-        datafile.write("}\n\n")
-    
+            datafile.write(var+"_trading_change = {")
+            for index in range(0, len(trading_name)):
+                datafile.write("\""+trading_name[index].strip()+"\":"+str(getint(trading_hold_change[index]))+",\n")
+            datafile.write("}\n\n")
 
-        datafile.write(var+"_long = {")
-        for index in range(0, len(long_name)):
-            datafile.write("\""+long_name[index].strip()+"\":"+str(getint(long_hold[index]))+",\n")
-        datafile.write("}\n\n")
+            datafile.write(var+"_long = {")
+            for index in range(0, len(long_name)):
+                datafile.write("\""+long_name[index].strip()+"\":"+str(getint(long_hold[index]))+",\n")
+            datafile.write("}\n\n")
 
-        datafile.write(var+"_long_change = {")
-        for index in range(0, len(long_name)):
-            datafile.write("\""+long_name[index].strip()+"\":"+str(getint(long_hold_change[index]))+",\n")
-        datafile.write("}\n\n")
+            datafile.write(var+"_long_change = {")
+            for index in range(0, len(long_name)):
+                datafile.write("\""+long_name[index].strip()+"\":"+str(getint(long_hold_change[index]))+",\n")
+            datafile.write("}\n\n")
 
-        datafile.write(var+"_short = {")
-        for index in range(0, len(short_name)):
-            datafile.write("\""+short_name[index].strip()+"\":"+str(getint(short_hold[index]))+",\n")
-        datafile.write("}\n\n")
+            datafile.write(var+"_short = {")
+            for index in range(0, len(short_name)):
+                datafile.write("\""+short_name[index].strip()+"\":"+str(getint(short_hold[index]))+",\n")
+            datafile.write("}\n\n")
 
-        datafile.write(var+"_short_change = {")
-        for index in range(0, len(short_name)):
-            datafile.write("\""+short_name[index].strip()+"\":"+str(getint(short_hold_change[index]))+",\n")
-        datafile.write("}\n\n")
+            datafile.write(var+"_short_change = {")
+            for index in range(0, len(short_name)):
+                datafile.write("\""+short_name[index].strip()+"\":"+str(getint(short_hold_change[index]))+",\n")
+
+            datafile.write("}\n\n")
+        except:
+            datafile.write("}\n\n")
 
 
 # 数据解析主函数
 def analysisMain(VARS, date):
     try:
         for var in VARS:
-            writeDataFile(var, date)
+            try:
+                writeDataFile(var, date)
+            except:
+                pass
         return True
     except:
         print("数据读取失败，程序中断")

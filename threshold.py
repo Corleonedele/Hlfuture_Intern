@@ -1,20 +1,21 @@
 import datetime
-from glob import glob
 import re
 from time import sleep,perf_counter
 from crawler import crawlerMain
 from clean import clean
 from analysis import ZZ_analysis, INE_analysis, SH_analysis, DL_analysis, getint
 
-DL_LIST = ['eb2201', 'eg2201', 'pg2201', 'pp2201', 'l2201', 'v2201']  #大连商品交易所
-ZZ_LIST = ["MA201", "TA201", "PF201"] #郑州商品交易所
-INE_LIST = ["lu2201"]  #上海国际能源交易中心
-SH_LIST = ['bu2201', 'fu2201'] #上海期货交易所
+DL_LIST = ['eb2109', 'eg2109', 'pg2110', 'pp2109', 'l2109', 'v2109']  #大连商品交易所
+ZZ_LIST = ["MA109", "TA109", "PF110"] #郑州商品交易所
+INE_LIST = ["lu2110"]  #上海国际能源交易中心
+SH_LIST = ['bu2112', 'fu2201'] #上海期货交易所
 
 DATA_LOSS = 0
 DATA_LOSS_LIST = []
 
 VAR_LIST = DL_LIST + ZZ_LIST + INE_LIST + SH_LIST
+
+
 
 def getTradeDay(start_date, enddate):
     holiday = ["20210101","20210211","20210212","20210215","20210216","20210217","20210405","20210503","20210504","20210505","20210614","20210920","20210921","20211001","20211004","20211005","20211006","20211007"]
@@ -49,8 +50,6 @@ def analysis(var, one_file_status=False, one_file_date=""):
     elif result in ["eb", "eg", "pg", "pp", "l", "v"]:
         return DL_analysis(var,one_file_status=False, one_file_date=one_file_date)
     return False
-
-
 
 def getThresholdValie(var, one_file_date):
     print("品种:", var, "日期", one_file_date)
@@ -87,7 +86,7 @@ def writeThresholdValue(var, date_list):
             print(var, date, "数据缺失")
             DATA_LOSS += 1
             DATA_LOSS_LIST.append(var+date)
-
+            continue
 
 
     values_max.sort()
@@ -96,27 +95,34 @@ def writeThresholdValue(var, date_list):
     values_80.sort()
     values_70.sort()
 
+    print(values_max)
+
     with open("thresholdData.py", "a") as dataFile:
-        dataFile.write(var+"_max = ")
-        dataFile.write(str(getDegree(0.9, values_max))+"\n")
-        dataFile.write(var+"_90 = ")
-        dataFile.write(str(getDegree(0.9, values_90))+"\n")
-        dataFile.write(var+"_85 = ")
-        dataFile.write(str(getDegree(0.9, values_85))+"\n")
-        dataFile.write(var+"_80 = ")
-        dataFile.write(str(getDegree(0.9, values_80))+"\n")
-        dataFile.write(var+"_70 = ")
-        dataFile.write(str(getDegree(0.9, values_70))+"\n")
+        try:
+            dataFile.write(var+"_max = ")
+            dataFile.write(str(getDegree(0.9, values_max))+"\n")
+            dataFile.write(var+"_90 = ")
+            dataFile.write(str(getDegree(0.9, values_90))+"\n")
+            dataFile.write(var+"_85 = ")
+            dataFile.write(str(getDegree(0.9, values_85))+"\n")
+            dataFile.write(var+"_80 = ")
+            dataFile.write(str(getDegree(0.9, values_80))+"\n")
+            dataFile.write(var+"_70 = ")
+            dataFile.write(str(getDegree(0.9, values_70))+"\n")
+        except:
+            pass
+
+
 
 def thresholdMain():
     start_time = perf_counter()
-    date_list = getTradeDay("20210801", "20211201")
+    date_list = getTradeDay("20210801", "20211210")
 
     for date in date_list:
         try:
             print("-"*30, "爬取日期:", date)
             crawlerMain(date, DL_LIST)
-            print("-"*30, "爬取成功:")
+            print("-"*30, "爬取成功")
             sleep(2)
         except:
             print("-"*30, "爬取日期:", date, "爬取失败")
@@ -126,7 +132,7 @@ def thresholdMain():
 
     sleep(2)
     print("数据处理完毕，清理中间文件中....")
-    clean()
+    # clean()
     end_time = perf_counter()
     print("共用时:", end_time-start_time, "s")
     print("DATA_LOSS", DATA_LOSS)
