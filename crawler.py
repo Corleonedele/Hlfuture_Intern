@@ -34,6 +34,7 @@ def load_file(response, folder_path, file_name, file_type=""):
 
 #对单个网站进行怕虫，并将结果写成暂存文件
 def get_res(url, name, var=""):
+    print(name, url)
     if "dec" in url:
         try:
             res = requests.post(url=url)

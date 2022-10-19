@@ -9,14 +9,15 @@ from threshold import getTradeDay
 
 
 # 定义全局变量 global variable
-DATE = "20220810"
+DATE = "20221013"
 BOOK_NAME = "化工数据汇总"+DATE+".xlsx"
 
 MONITOR_POS = ["永安期货", "海通期货", "中信期货", "国泰期货", "东证期货", "恒力期货", "华泰期货", "新湖期货"]
-DL_LIST = ['eb2209', 'eg2209', 'pg2209', 'pp2209', 'l2209', 'v2209']  #大连商品交易所
-ZZ_LIST = ["MA209", "TA209", "PF210"] #郑州商品交易所
-INE_LIST = ["lu2209"]  #上海国际能源交易中心
-SH_LIST = ['bu2209', 'fu2301'] #上海期货交易所
+
+DL_LIST = ['eb2212', 'eg2301', 'pg2212', 'pp2301', 'l2301', 'v2301']  #大连商品交易所
+ZZ_LIST = ["MA301", "TA301", "PF211"] #郑州商品交易所
+INE_LIST = ["lu2211"]  #上海国际能源交易中心
+SH_LIST = ['fu2301'] #上海期货交易所
 
 VAR_LIST = DL_LIST + ZZ_LIST + INE_LIST + SH_LIST
 
@@ -44,9 +45,9 @@ def main():
     generateMain(VAR_LIST)
 
     sleep(2)
-    clean_status = clean()
+    # clean_status = clean()
     #查看数据清扫状态，如果清扫失败则中断程序
-    if not clean_status:return
+    # if not clean_status:return
 
     print("数据准备完毕，请运行EXCEL.py生成EXCEL文件")
     print(DATE, "数据整理完毕")

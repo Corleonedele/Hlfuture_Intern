@@ -5,10 +5,10 @@ from crawler import crawlerMain
 from clean import clean
 from analysis import ZZ_analysis, INE_analysis, SH_analysis, DL_analysis, getint
 
-DL_LIST = ['eb2109', 'eg2109', 'pg2110', 'pp2109', 'l2109', 'v2109']  #大连商品交易所
-ZZ_LIST = ["MA109", "TA109", "PF110"] #郑州商品交易所
-INE_LIST = ["lu2110"]  #上海国际能源交易中心
-SH_LIST = ['bu2112', 'fu2201'] #上海期货交易所
+DL_LIST = ['eb2111', 'eg2201', 'pg2111', 'pp2201', 'l2201', 'v2201']  #大连商品交易所
+ZZ_LIST = ["MA201", "TA201", "PF111"] #郑州商品交易所
+INE_LIST = ["lu2111",]  #上海国际能源交易中心
+SH_LIST = ['fu2201','bu2212'] #上海期货交易所
 
 DATA_LOSS = 0
 DATA_LOSS_LIST = []
@@ -116,7 +116,7 @@ def writeThresholdValue(var, date_list):
 
 def thresholdMain():
     start_time = perf_counter()
-    date_list = getTradeDay("20210801", "20211210")
+    date_list = getTradeDay("20210901", "20211231")
 
     for date in date_list:
         try:
@@ -135,11 +135,11 @@ def thresholdMain():
 
     sleep(2)
     print("数据处理完毕，清理中间文件中....")
-    # clean()
+    clean()
     end_time = perf_counter()
     print("共用时:", end_time-start_time, "s")
     print("DATA_LOSS", DATA_LOSS)
-    # print("DATA_LOSS_LIST", DATA_LOSS_LIST)
+    print("DATA_LOSS_LIST", DATA_LOSS_LIST)
 
 if __name__ == "__main__":
     thresholdMain()
